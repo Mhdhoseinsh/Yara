@@ -290,7 +290,7 @@ body.has-nav .scr{padding-bottom:calc(66px + 72px + env(safe-area-inset-bottom))
 
 <div style="padding:12px 14px 4px;display:flex;justify-content:space-between;align-items:center;gap:8px">
   <span style="display:flex;align-items:center;gap:8px;min-width:0;flex-wrap:wrap"><span class="sub" style="font-size:13px" id="cnt"></span><button class="lk" id="fclr" style="display:none;min-height:36px">پاک کردن فیلترها</button></span>
-  <select id="srt" aria-label="مرتب‌سازی"><option value="d">نزدیک‌ترین</option><option value="p">ارزان‌ترین</option><option value="r">بهترین امتیاز</option></select>
+  <select id="srt" aria-label="مرتب‌سازی"><option value="d">نزدیک‌ترین</option><option value="p">ارزان‌ترین</option><option value="r">بهترین امتیاز</option><option value="n">جدیدترین</option></select>
 </div>
 <p class="sub" id="note" style="display:none;padding:0 14px 8px;align-items:center;gap:6px"><i class="ti ti-calendar-off" style="font-size:16px" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-calendar-off"/></svg></i><span id="notet"></span></p>
 
@@ -450,13 +450,13 @@ var ITEMS=[
 {t:'اسپرسوساز نیمه‌خودکار',cn:'آشپزخانه',g:'home',ic:'chef-hat',v:4.5,n:9,km:2.6,pn:75000,u:'روز',per:'dw',tag:'تحویل حضوری',nb:'سعادت‌آباد'},
 {t:'گیتار آکوستیک',cn:'ساز موسیقی',g:'art',ic:'guitar-pick',v:4.6,n:11,km:2.5,pn:90000,u:'روز',per:'dw',tag:'تحویل حضوری',nb:'ولنجک'},
 {t:'دوربین دوچشمی',cn:'دوربین دوچشمی',g:'art',ic:'binoculars',v:4.4,n:6,km:4.4,pn:65000,u:'روز',per:'d',tag:'ارسال با پیک',nb:'تجریش'}];
-ITEMS.forEach(function(x,i){x.pd=x.pn*(x.u==='ساعت'?8:1);x.vf=(i%4)!==3});
+ITEMS.forEach(function(x,i){x.id=i;x.pd=x.pn*(x.u==='ساعت'?8:1);x.vf=(i%4)!==3;x.ag=x.nw?(i%3)+1:10+i*3});
 /* saved filters: whitelist and clamp everything read from storage */
 var FKEY='yara_filters';
 function cleanF(o){o=(o&&typeof o==='object')?o:{};
 var n=function(v,lo,hi,d){v=parseInt(v,10);return(isFinite(v)&&v>=lo&&v<=hi)?v:d};
 var inn=function(v,list,d){return list.indexOf(v)>-1?v:d};
-return{sort:inn(o.sort,['d','p','r'],'d'),per:inn(o.per,['all','h','d','w'],'all'),
+return{sort:inn(o.sort,['d','p','r','n'],'d'),per:inn(o.per,['all','h','d','w'],'all'),
 min:n(o.min,0,100000000,0),max:n(o.max,0,100000000,0),km:n(o.km,1,20,20),
 meet:o.meet===true,courier:o.courier===true,rt:inn(o.rt,['0','4','45'],'0'),vf:o.vf===true}}
 function loadF(){var r=null;try{r=JSON.parse(localStorage.getItem(FKEY))}catch(e){}return cleanF(r)}
@@ -473,6 +473,29 @@ if(f.rt==='4'&&it.v<4)return false;
 if(f.rt==='45'&&it.v<4.5)return false;
 if(f.vf&&!it.vf)return false;
 return true}
+
+/* ---- product helpers (detail + checkout read the same record the list showed) ---- */
+var OWNERS=['سارا احمدی','علی محمدی','نگار کریمی','امیر حسینی','مینا رضایی','پویا نظری','لیلا فرجی','رضا سلیمی'];
+var ACC={tools:'جعبه حمل، شارژر',media:'کیف حمل، کارت حافظه',sport:'قفل، تجهیزات ایمنی',travel:'کیف حمل، لوازم نصب',party:'کیسه نگهداری',home:'دفترچه راهنما',art:'کیف حمل'};
+function normT(s){return String(s).replace(/ي/g,'ی').replace(/ك/g,'ک').replace(/[\u200c\s]/g,'').toLowerCase()}
+function findItem(){
+var p=new URLSearchParams(location.search),id=parseInt(p.get('id'),10);
+if(isFinite(id)&&id>=0&&id<ITEMS.length)return ITEMS[id];
+var t=p.get('t');
+if(t){var q=normT(t.slice(0,80)),best=null;
+ ITEMS.forEach(function(x){if(!best&&normT(x.t)===q)best=x});
+ if(!best)ITEMS.forEach(function(x){var n=normT(x.t);if(!best&&(n.indexOf(q)===0||q.indexOf(n)===0))best=x});
+ if(!best)ITEMS.forEach(function(x){var n=normT(x.t);if(!best&&(n.indexOf(q)>-1||q.indexOf(n)>-1))best=x});
+ if(best)return best}
+return ITEMS[1]}
+function ownerOf(it){return OWNERS[it.id%OWNERS.length]}
+function depositOf(it){return it.dep?2000000:Math.max(200000,Math.round(it.pd*3/100000)*100000)}
+function pricesOf(it){
+var out=[],h=it.u==='ساعت'?it.pn:Math.round(it.pn/6/1000)*1000,dd=it.u==='ساعت'?it.pn*6:it.pn,w=it.u==='ساعت'?it.pn*30:Math.round(it.pn*5/1000)*1000;
+if(it.per.indexOf('h')>-1)out.push({k:'h',n:'ساعتی',u:'ساعت',p:h,max:12,def:4});
+if(it.per.indexOf('d')>-1)out.push({k:'d',n:'روزانه',u:it.u==='شب'?'شب':'روز',p:dd,max:14,def:2});
+if(it.per.indexOf('w')>-1)out.push({k:'w',n:'هفتگی',u:'هفته',p:w,max:4,def:1});
+return out}
 
 
 //@data
@@ -523,10 +546,10 @@ function free(it){if(!st.a||!it.busy)return true;var s=dayOff(st.a),e=dayOff(st.
 function render(){
 var base=ITEMS.filter(function(it){return matchText(it)&&matchLoc(it)&&matchPer(it)&&matchF(it,F)});
 var list=base.filter(free),hidden=base.length-list.length;
-list.sort(function(a,b){return F.sort==='d'?a.km-b.km:F.sort==='p'?a.pd-b.pd:b.v-a.v});
+list.sort(function(a,b){return F.sort==='d'?a.km-b.km:F.sort==='p'?a.pd-b.pd:F.sort==='n'?a.ag-b.ag:b.v-a.v});
 var box=$('list');box.innerHTML='';
 list.forEach(function(it){
- var tint=BG[it.g],r=document.createElement('div');r.className='rowi';r.setAttribute('data-go','03-detail.html');
+ var tint=BG[it.g],r=document.createElement('div');r.className='rowi';r.setAttribute('data-go','03-detail.html?id='+it.id);
  var rating=it.v?'<span class="rt">'+glyph()+'<b>'+nf0.format(it.v)+'</b><small>('+nf0.format(it.n)+' نظر)</small></span>':'<span class="rt">جدید</span>';
  var dist=it.km<1?nf0.format(it.km*1000)+' متر':nf0.format(it.km)+' کیلومتر';
  r.innerHTML='<div class="th" style="background:var(--bg-tint-'+tint+')">'+icon(it.ic,'ic','color:var(--text-tint-'+tint+')')+(it.nw?'<span class="new">جدید</span>':'')+'<button class="heart" aria-label="ذخیره">'+icon('heart')+'</button></div>'
