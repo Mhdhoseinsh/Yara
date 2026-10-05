@@ -255,7 +255,17 @@ body.has-nav .scr{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
 .rowi .bd{flex:1;min-width:0;display:flex;flex-direction:column}
 .rowi .t{font-size:14px;margin:0 0 2px}
 .rowi .m{gap:6px}
-.rowi .pr{margin-top:auto;font-size:14px}
+.rowi .prw{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.rowi .prw .pr{margin-top:0;font-size:14px}
+.pbtn{flex:0 0 auto;display:inline-flex;align-items:center;gap:2px;min-height:32px;padding:0 10px;border:.5px solid var(--border-strong);border-radius:999px;background:transparent;font-size:12px;color:var(--text-accent)}
+.pbtn i{font-size:14px;color:inherit;transition:transform .15s}
+.pbtn[aria-expanded="true"] i{transform:rotate(-90deg)}
+.pps{margin-top:6px;border-top:.5px dashed var(--border-strong);padding-top:4px}
+.ppr{display:flex;align-items:baseline;gap:6px;padding:4px 0;font-size:13px;color:var(--text-secondary)}
+.ppr b{font-weight:500;color:var(--text-primary)}
+.ppr span:first-child{min-width:46px}
+.ppr small{font-size:11px}
+.ppr.on span:first-child,.ppr.on b{color:var(--text-accent)}
 .qc{width:32px;height:32px;min-height:32px;padding:0;border:none;background:transparent;display:none;align-items:center;justify-content:center;flex:0 0 32px}
 .qc i{font-size:16px}
 .pk{min-height:44px;font-size:13px}
@@ -311,18 +321,190 @@ body.has-nav .scr{padding-bottom:calc(66px + 72px + env(safe-area-inset-bottom))
   <div class="grab"></div>
   <div class="sh"><h2>کجا دنبالش می‌گردی؟</h2><button class="ib" data-close aria-label="بستن"><i class="ti ti-x" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></i></button></div>
   <p class="hint" style="padding:0 14px;margin-bottom:10px">اختیاری است. اگر انتخاب نکنی، همه جا را نشان می‌دهیم.</p>
+  <div id="lsqw"><label class="sfld" for="lsq"><i class="ti ti-search" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"/></svg></i><input type="text" id="lsq" placeholder="جستجوی استان، شهر یا منطقه…" maxlength="40" autocomplete="off"></label></div>
   <div id="locs">
     <div class="opt on" data-v=""><div class="rd"></div><span style="flex:1" class="a">هر جا</span><i class="ti ti-check ck" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></i></div>
     <div class="opt" data-v="نزدیک من"><div class="rd"></div><span style="flex:1" class="a">نزدیک من</span><i class="ti ti-current-location ic" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-current-location"/></svg></i></div>
-    <div class="opt" data-v="ونک"><div class="rd"></div><span style="flex:1" class="a">ونک</span></div>
-    <div class="opt" data-v="سعادت‌آباد"><div class="rd"></div><span style="flex:1" class="a">سعادت‌آباد</span></div>
-    <div class="opt" data-v="ولنجک"><div class="rd"></div><span style="flex:1" class="a">ولنجک</span></div>
-    <div class="opt" data-v="تجریش"><div class="rd"></div><span style="flex:1" class="a">تجریش</span></div>
-    <div class="opt" data-v="شهرک غرب"><div class="rd"></div><span style="flex:1" class="a">شهرک غرب</span></div>
-    <div class="opt" data-v="پونک"><div class="rd"></div><span style="flex:1" class="a">پونک</span></div>
-    <div class="opt" data-v="جردن"><div class="rd"></div><span style="flex:1" class="a">جردن</span></div>
   </div>
 </div>
+
+<style>
+#lsqw{padding:0 14px 10px;position:sticky;top:0;background:var(--surface-2);z-index:2}
+.lprov{display:flex;align-items:center;gap:8px;width:calc(100% - 28px);margin:0 14px 8px;min-height:48px;padding:0 14px;border:none;border-radius:12px;background:var(--surface-1);font-size:14px;font-weight:500;text-align:right;color:var(--text-primary)}
+.lprov .cn{flex:0 0 auto;font-size:12px;font-weight:400;color:var(--text-secondary)}
+.lprov i.chv,.lexp i.chv{transition:transform .15s}
+.lprov.open i.chv{transform:rotate(-90deg)}
+.lexp{flex:0 0 auto;display:flex;align-items:center;gap:2px;min-height:32px;padding:0 8px;border:none;background:transparent;color:var(--text-accent);font-size:12px;border-radius:8px}
+.lexp[aria-expanded="true"] i.chv{transform:rotate(-90deg)}
+.lsub{margin:0 0 6px}
+.sheet .lsub .opt{margin-right:34px}
+.lgt{font-size:12px;color:var(--text-secondary);padding:2px 34px 6px 14px}
+.opt .a .b{font-weight:400;margin-right:4px}
+</style>
+<script>
+/* ===== IR-LOCATIONS: استان‌ها، شهرها و مناطق (قابل ویرایش) ===== */
+var IRLOC=(function(){
+var P=[
+['تهران','تهران،اسلامشهر،ری،شهریار،ورامین،پاکدشت،پردیس،بومهن،رودهن،دماوند،فیروزکوه،قدس،ملارد،بهارستان،نسیم‌شهر،قرچک،پیشوا،چهاردانگه،صباشهر،صالحیه،وحیدیه،کهریزک،باقرشهر،لواسان،شمیرانات،رباط‌کریم،باغستان،اندیشه،گلستان،نصیرشهر،فردوسیه،کیلان،آبسرد،آبعلی،جوادآباد،قیام‌دشت،شاهدشهر،حسن‌آباد'],
+['البرز','کرج،فردیس،نظرآباد،هشتگرد،محمدشهر،مشکین‌دشت،ماهدشت،کمال‌شهر،اشتهارد،طالقان،چهارباغ،گرمدره،سیف‌آباد،تنکمان،کوهسار،آسارا،شهر جدید هشتگرد'],
+['اصفهان','اصفهان،کاشان،نجف‌آباد،خمینی‌شهر،شاهین‌شهر،شهرضا،فلاورجان،مبارکه،زرین‌شهر،لنجان،گلپایگان،خوانسار،نطنز،آران و بیدگل،فریدن،سمیرم،اردستان،نایین،خور و بیابانک،چادگان،برخوار،تیران،کرون،دهاقان،فریدونشهر،بوئین و میاندشت،گلدشت،زواره،جرقویه،دولت‌آباد،زیباشهر،هرند،کوهپایه،بادرود،قهدریجان،بهارستان،ورزنه،سده لنجان،ایمانشهر،داران،عسگران'],
+['فارس','شیراز،مرودشت،کازرون،جهرم،فسا،لار،داراب،فیروزآباد،آباده،نی‌ریز،اقلید،لامرد،سپیدان،ممسنی،استهبان،خرم‌بید،زرین‌دشت،سروستان،مهر،گراش،قیر و کارزین،خنج،بوانات،پاسارگاد،رستم،ارسنجان،کوار،فراشبند،بیضا،کوهچنار،قیر،صفاشهر،اقلید،ایج،اوز،علامرودشت،زاهدشهر،خاوران،رونیز،سرچهان،بالاده،امام‌شهر،شیراز جدید صدرا'],
+['خراسان رضوی','مشهد،نیشابور،سبزوار،تربت حیدریه،کاشمر،قوچان،تربت جام،سرخس،گناباد،چناران،فریمان،درگز،تایباد،خواف،رشتخوار،بردسکن،جوین،خلیل‌آباد،کلات،مه‌ولات،بجستان،داورزن،زاوه،بینالود،فیروزه،طرقبه،شاندیز،صالح‌آباد،جغتای،باخرز،لطف‌آباد،نقاب،ملک‌آباد،گلبهار،ششتمد،شهرآباد،قاسم‌آباد،سلطان‌آباد،بایگ،کدکن،بار،سنگ‌بست،فرهادگرد،کاخک'],
+['خراسان شمالی','بجنورد،شیروان،اسفراین،جاجرم،گرمه،فاروج،مانه و سملقان،راز و جرگلان،آشخانه،صفی‌آباد،پیش قلعه،حصار گرم‌خان،قوشخانه،سنخواست،لوجلی،تیتکانلو،درق،زیارت'],
+['خراسان جنوبی','بیرجند،قائن،طبس،فردوس،نهبندان،سرایان،سربیشه،درمیان،بشرویه،خوسف،زیرکوه،اسدیه،آیسک،مود،اسفدن،شوسف،ارسک،عشق‌آباد'],
+['آذربایجان شرقی','تبریز،مراغه،مرند،میانه،اهر،سراب،بناب،شبستر،اسکو،هشترود،ملکان،بستان‌آباد،کلیبر،جلفا،عجب‌شیر،آذرشهر،هریس،ورزقان،خدا‌آفرین،چاراویماق،ایلخچی،صوفیان،سهند،گوگان،تسوج،لیلان،یامچی،باسمنج،خسروشهر،ممقان،سردرود،سیس،قره‌آغاج،کشکسرای،تیکمه‌داش،خامنه،زنوز،دوزدوزان،هادیشهر،نظرکهریزی،بخشایش،ترک،مبارک‌شهر،شربیان،خواجه،آچاچی،خمارلو،قره‌ضیاءالدین'],
+['آذربایجان غربی','ارومیه،خوی،میاندوآب،مهاباد،بوکان،سلماس،پیرانشهر،نقده،اشنویه،سردشت،شاهین‌دژ،تکاب،چالدران،ماکو،پلدشت،شوط،چایپاره،سیه‌چشمه،میرآباد،ربط،سیلوانه،قره‌ضیاءالدین،بازرگان،فیرورق،نالوس،محمودآباد،گردکشانه،کشاورز،تازه‌شهر،باروق،اردوشاه،سرو،مهاباد،زرآباد،قطور،خلیفان،دیزج‌دیز،سیمینه،نوشین‌شهر،ایواوغلی'],
+['اردبیل','اردبیل،پارس‌آباد،مشگین‌شهر،خلخال،گرمی،بیله‌سوار،نمین،نیر،کوثر،سرعین،اصلاندوز،هشتجین،فخرآباد،لاهرود،تازه‌کند،گیوی،هیر،عنبران،رضی،سنگ‌ور،جعفرآباد،مرادلو،آبی‌بیگلو،گرمی'],
+['زنجان','زنجان،ابهر،خرمدره،ماهنشان،خدابنده،طارم،ایجرود،سلطانیه،قیدار،حلب،زرین‌رود،دندی،سجاس،نیک‌پی،صائین‌قلعه،کرسف،هیدج،آب‌بر،چورزق،گیلوان'],
+['قزوین','قزوین،البرز،تاکستان،بوئین‌زهرا،آبیک،آوج،محمدیه،اقبالیه،الوند،خاکعلی،سیردان،کوهین،ارداق،شال،ضیاءآباد،بیدستان،محمودآباد نمونه،معلم‌کلایه،نرجه،رازمیان،سگزآباد،دانسفهان،اسفرورین،حصارخروان،خرمدشت'],
+['قم','قم،کهک،جعفریه،دستجرد،قنوات،سلفچگان،نیزار،خلجستان'],
+['مرکزی','اراک،ساوه،خمین،محلات،دلیجان،شازند،تفرش،آشتیان،کمیجان،خنداب،زرندیه،فراهان،نوبران،مامونیه،رازقان،آستانه،غرق‌آباد،پرندک،سنجان،توره،جاورسیان،میلاجرد،آوه،هندودر،کرهرود،کارچان،داودآباد،ساروق،نراق،خشکرود،وفس،مهاجران'],
+['همدان','همدان،ملایر،نهاوند،تویسرکان،اسدآباد،بهار،کبودرآهنگ،رزن،فامنین،لالجین،قهاوند،دمق،شیرین‌سو،گل‌تپه،جورقان،سامن،آجین،مریانج،فرسفج،زنگنه،قروه‌درجزین،جوکار،صالح‌آباد،برزول،سرکان،کبودر آهنگ،گیان'],
+['کردستان','سنندج،سقز،مریوان،بانه،قروه،بیجار،کامیاران،دیواندره،دهگلان،سروآباد،سریش‌آباد،دلبران،زرینه،دزج،بلبان‌آباد،دیوان‌دره،یاسوکند،کانی‌دینار،چناره،موچش،پیرتاج،اورامان تخت،بویین سفلی'],
+['کرمانشاه','کرمانشاه،اسلام‌آباد غرب،سرپل ذهاب،کنگاور،سنقر،هرسین،قصر شیرین،پاوه،جوانرود،صحنه،گیلان‌غرب،دالاهو،روانسر،ثلاث باباجانی،سومار،نودشه،رباط،کرندغرب،سطر،بیستون،ماهیدشت،تازه‌آباد،شاهو،حمیل،میان‌راهان،باینگان،گهواره،قلعه شاهین،سراب‌ذهاب'],
+['ایلام','ایلام،دهلران،ایوان،آبدانان،مهران،دره‌شهر،بدره،چرداول،سیروان،ملکشاهی،ارکواز،موسیان،میمه،لومار،پهله،سرابله،صالح‌آباد،توحید،چوار،زرنه،دلگشا،آسمان‌آباد،ماژین'],
+['لرستان','خرم‌آباد،بروجرد،دورود،الیگودرز،کوهدشت،ازنا،نورآباد،پلدختر،الشتر،سپیددشت،رومشکان،چگنی،معمولان،الوار گرمسیری،کونانی،سراب‌دوره،ویسیان،زاغه،بیران‌شهر،گراب،هرسین،چالانچولان،فیروزآباد،ماسور،اشترینان،بالاگریوه'],
+['خوزستان','اهواز،آبادان،خرمشهر،دزفول،اندیمشک،ماهشهر،بندر امام خمینی،شوشتر،بهبهان،ایذه،مسجدسلیمان،شادگان،رامهرمز،دشت آزادگان،سوسنگرد،هندیجان،باغ‌ملک،اروندکنار،شوش،گتوند،لالی،هفتکل،رامشیر،حمیدیه،ویس،کارون،بندر ماهشهر،میانرود،صفی‌آباد،چمران،سردشت،هویزه،بستان،قلعه خواجه،حر،الوان،زیدون،کوت عبدالله،مینوشهر،چغامیش،شیبان،جنت‌مکان،آغاجاری،رفیع،سیاحی،بندر امام،ملاثانی،میداوود،سالند،تشان،دهدز'],
+['بوشهر','بوشهر،برازجان،بندر گناوه،دشتستان،کنگان،دیر،دیلم،جم،عسلویه،تنگستان،دشتی،خورموج،اهرم،بنک،سعدآباد،آبپخش،شنبه،بندر ریگ،نخل تقی،کلمه،چغادک،وحدتیه،سیراف،بادوله،امام حسن،دلوار،بوشکان،شبانکاره،بندر دیلم،بندر کنگان،بردخون'],
+['هرمزگان','بندرعباس،قشم،کیش،میناب،بندر لنگه،جاسک،رودان،بستک،حاجی‌آباد،پارسیان،بشاگرد،ابوموسی،سیریک،خمیر،پارسیان،بندر خمیر،تازیان،گوهران،سندرک،درگهان،فین،تیرور،کنگ،گچین،سرگز،کوهستک،زیارتعلی،دهبارز،هشتبندی،بندزرک،سردشت'],
+['کرمان','کرمان،سیرجان،رفسنجان،بم،جیرفت،زرند،بردسیر،کهنوج،بافت،شهربابک،راور،عنبرآباد،منوجان،قلعه گنج،رودبار جنوب،ریگان،فهرج،نرماشیر،انار،کوهبنان،رابر،ارزوئیه،فاریاب،رودبار،بلوک،گلباف،ماهان،پاریز،نگار،کشکوئیه،نودژ،بزنجان،خورسند،زیدآباد'],
+['یزد','یزد،میبد،اردکان،بافق،ابرکوه،مهریز،تفت،خاتم،اشکذر،بهاباد،صدوق،مروست،هرات،ندوشن،عقدا،زارچ،حمیدیا،شاهدیه،مهردشت،احمدآباد،بفروئیه،ندوشن،اسفندآباد'],
+['سیستان و بلوچستان','زاهدان،چابهار،زابل،ایرانشهر،سراوان،خاش،نیک‌شهر،کنارک،سرباز،میرجاوه،هامون،زهک،دلگان،فنوج،قصرقند،نیمروز،مهرستان،راسک،تفتان،سیب و سوران،بمپور،کنارک،اسپکه،گلمورتی،جالق،بزمان،پیشین،رمشک،سوران،محمدان،کوهک،زرآباد،بنت،پلان،دوست‌محمد،ادیمی،محمدآباد'],
+['گیلان','رشت،انزلی،لاهیجان،لنگرود،آستارا،رودسر،صومعه‌سرا،فومن،تالش،رودبار،آستانه اشرفیه،سیاهکل،شفت،ماسال،املش،رضوانشهر،لشت‌نشا،خمام،کوچصفهان،منجیل،رحیم‌آباد،کلاچای،بندر کیاشهر،چابکسر،اسالم،ماکلوان،شلمان،لوشان،هشتپر،خشکبیجار،پره‌سر،سنگر،بره‌سر،سرچم،جیرنده،ماسوله،احمدسرگوراب،گوراب زرمیخ،کیاشهر،لوندویل،چوبر،بازار جمعه'],
+['مازندران','ساری،بابل،آمل،قائمشهر،بابلسر،نوشهر،چالوس،تنکابن،رامسر،بهشهر،نکا،محمودآباد،فریدون‌کنار،جویبار،نور،عباس‌آباد،سوادکوه،میاندرود،گلوگاه،کلاردشت،سرخرود،رویان،سلمان‌شهر،کتالم،مرزن‌آباد،ایزدشهر،پل‌سفید،شیرگاه،زیرآب،کیاکلا،امیرکلا،خوش‌رودپی،دابودشت،رینه،بلده،کجور،عباس‌آباد،کیاسر،هراز،چمستان،آلاشت،سورک،مرزیکلا،بندپی،کوهستان،کلارآباد'],
+['گلستان','گرگان،گنبد کاووس،علی‌آباد کتول،آق‌قلا،بندر ترکمن،کردکوی،آزادشهر،رامیان،مینودشت،بندر گز،کلاله،گالیکش،مراوه‌تپه،گمیشان،فاضل‌آباد،سرخنکلاته،خان‌ببین،نگین‌شهر،جلین،دلند،نوکنده،انبار الوم،سیمین‌شهر،اینچه برون،تاتار علیا،ترکمن،دوزین،مزرعه،نوده خاندوز'],
+['سمنان','سمنان،شاهرود،دامغان،گرمسار،مهدیشهر،سرخه،میامی،آرادان،ایوانکی،بسطام،شهمیرزاد،کلاته خیج،دیباج،امیریه،مجن،بیارجمند،کلاته،سنگسر،درجزین،رودیان،ایوانکی،اسدیه،لاسجرد،کلاته رودبار'],
+['چهارمحال و بختیاری','شهرکرد،بروجن،لردگان،فارسان،کوهرنگ،اردل،سامان،بن،کیار،ناغان،جونقان،گندمان،فرادنبه،چلگرد،فرخ‌شهر،هفشجان،سودجان،بلداجی،گهرو،سورشجان،مال‌خلیفه،جوزدان'],
+['کهگیلویه و بویراحمد','یاسوج،دوگنبدان،دهدشت،سی‌سخت،لیکک،چرام،بهمئی،باشت،گچساران،لنده،مادوان،سوق،سرفاریاب،پاتاوه،دیشموک،لوداب،مارگون،چیتاب،قلعه رئیسی،مهر'],
+];
+/* مناطق/محله‌ها: [شهر, گروه‌ها] */
+var D={
+'تهران':[
+['منطقه ۱','تجریش،ولنجک،اقدسیه،زعفرانیه،الهیه،فرمانیه،قیطریه،دربند،نیاوران،جماران،دزاشیب'],
+['منطقه ۲','شهرک غرب،سعادت‌آباد،دریا،شهرک آپادانا،کوی فراز'],
+['منطقه ۳','ونک،جردن،میرداماد،پاسداران،دروس،دولت'],
+['منطقه ۴','تهران‌پارس،نارمک،حکیمیه،لویزان،شمیران‌نو'],
+['منطقه ۵','پونک،شهران،اکباتان،آریاشهر،المپیک،جنت‌آباد'],
+['منطقه ۶','یوسف‌آباد،گاندی،سهروردی،کوی نصر'],
+['منطقه ۷',''],['منطقه ۸',''],['منطقه ۹',''],['منطقه ۱۰',''],['منطقه ۱۱',''],['منطقه ۱۲','بازار،سرچشمه،عود‌لاجان'],['منطقه ۱۳',''],['منطقه ۱۴',''],['منطقه ۱۵',''],['منطقه ۱۶',''],['منطقه ۱۷',''],['منطقه ۱۸',''],['منطقه ۱۹',''],['منطقه ۲۰',''],['منطقه ۲۱',''],['منطقه ۲۲','چیتگر،دریاچه چیتگر']],
+'مشهد':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳،منطقه ۴،منطقه ۵،منطقه ۶،منطقه ۷،منطقه ۸،منطقه ۹،منطقه ۱۰،منطقه ۱۱،منطقه ۱۲،منطقه ۱۳']],
+'اصفهان':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳،منطقه ۴،منطقه ۵،منطقه ۶،منطقه ۷،منطقه ۸،منطقه ۹،منطقه ۱۰،منطقه ۱۱،منطقه ۱۲،منطقه ۱۳،منطقه ۱۴،منطقه ۱۵']],
+'شیراز':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳،منطقه ۴،منطقه ۵،منطقه ۶،منطقه ۷،منطقه ۸،منطقه ۹،منطقه ۱۰،منطقه ۱۱']],
+'تبریز':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳،منطقه ۴،منطقه ۵،منطقه ۶،منطقه ۷،منطقه ۸،منطقه ۹،منطقه ۱۰']],
+'کرج':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳،منطقه ۴،منطقه ۵،منطقه ۶،منطقه ۷،منطقه ۸،منطقه ۹،منطقه ۱۰']],
+'قم':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳،منطقه ۴،منطقه ۵،منطقه ۶،منطقه ۷،منطقه ۸']],
+'اهواز':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳،منطقه ۴،منطقه ۵،منطقه ۶،منطقه ۷،منطقه ۸']],
+'کرمانشاه':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳']],
+'ارومیه':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
+'رشت':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳']],
+'کرمان':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳']],
+'یزد':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳']],
+'همدان':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳']],
+'ساری':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳']],
+'اراک':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
+'اردبیل':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
+'زنجان':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
+'بندرعباس':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳']],
+'قزوین':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳']],
+'خرم‌آباد':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
+'سنندج':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
+'زاهدان':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳']],
+'بوشهر':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
+'بیرجند':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
+'گرگان':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
+'بجنورد':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
+'ایلام':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
+'شهرکرد':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
+'یاسوج':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
+'سمنان':[['مناطق شهرداری','منطقه ۱،منطقه ۲']]
+};
+function sp(s){return s?s.split('،').map(function(x){return x.trim()}).filter(Boolean):[]}
+var provinces=[],SETS={},seen={};
+P.forEach(function(p){
+ var cities=[],ok={};
+ sp(p[1]).forEach(function(c){if(ok[c])return;ok[c]=1;
+  var groups=[],all=[];
+  (D[c]||[]).forEach(function(g){
+   var mem=sp(g[1]),items=[];
+   if(c==='تهران'&&g[0].indexOf('منطقه')===0){
+     /* منطقه تهران: خودش + محله‌ها */
+     var v=g[0]+'، تهران';items.push({n:g[0],v:v,set:mem.slice()});SETS[v]=mem.slice();
+     mem.forEach(function(m){items.push({n:m,v:m,nb:true});all.push(m)});
+   }else{
+     mem.forEach(function(m){var v=m+'، '+c;items.push({n:m,v:v});});
+   }
+   groups.push({n:g[0],items:items});
+  });
+  cities.push({n:c,v:c,groups:groups});
+  SETS[c]=all;
+ });
+ provinces.push({n:p[0],cities:cities});
+});
+/* آیا وسیله‌ای با محله nb در مکان انتخابی loc قرار دارد؟ */
+function match(nb,loc){
+ if(!loc)return true;
+ if(loc===nb)return true;
+ var s=SETS[loc];
+ return !!(s&&s.indexOf(nb)>-1)}
+/* نرمال‌سازی برای جستجو */
+function norm(s){return String(s).replace(/ي/g,'ی').replace(/ك/g,'ک').replace(/[\u200c\u200f\u200e]/g,'').replace(/\s+/g,'').toLowerCase()}
+return{provinces:provinces,match:match,norm:norm}})();
+
+/* ===== رابط انتخاب مکان: استان ← شهر ← منطقه/محله، با جستجو ===== */
+(function(){
+var box=document.getElementById('locs'),sh=document.getElementById('sh-loc');
+if(!box||!sh||!window.IRLOC)return;
+var body=document.createElement('div');body.id='lbody';box.appendChild(body);
+var sq=document.getElementById('lsq');
+var open={p:{'تهران':1},c:{'تهران':1}};
+function cur(){return(typeof st!=='undefined'&&st&&typeof st.loc==='string')?st.loc:(typeof loc!=='undefined'?loc:'')}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
+function opt(v,n,sub,exp){var c=cur();
+ return '<div class="opt'+(v===c?' on':'')+'" data-v="'+esc(v)+'"><div class="rd"></div><span style="flex:1" class="a">'+esc(n)+(sub?' <span class="b">'+esc(sub)+'</span>':'')+'</span>'+(exp||'')+'</div>'}
+function chv(){return '<i class="ti ti-chevron-left chv" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-left"/></svg></i>'}
+function cityHtml(c){
+ var has=c.groups.length>0,isOpen=!!open.c[c.n];
+ var h=opt(c.v,c.n,'',has?'<button type="button" class="lexp" data-c="'+esc(c.n)+'" aria-expanded="'+isOpen+'">مناطق '+chv()+'</button>':'');
+ if(has&&isOpen){h+='<div class="lsub">';
+  c.groups.forEach(function(g){
+   if(!(c.n==='تهران'&&g.items.length))h+='<div class="lgt">'+esc(g.n)+'</div>';
+   g.items.forEach(function(it){h+=opt(it.v,it.n,it.nb?'':'')})});
+  h+='</div>'}
+ return h}
+function browse(){
+ var h='';
+ IRLOC.provinces.forEach(function(p){
+  var isOpen=!!open.p[p.n];
+  h+='<button type="button" class="lprov'+(isOpen?' open':'')+'" data-p="'+esc(p.n)+'" aria-expanded="'+isOpen+'"><span style="flex:1">'+esc(p.n)+'</span><span class="cn">'+p.cities.length.toLocaleString('fa-IR')+' شهر</span>'+chv()+'</button>';
+  if(isOpen)p.cities.forEach(function(c){h+=cityHtml(c)})});
+ return h}
+function searchRes(q){
+ var n=IRLOC.norm(q),out=[],MAX=60;
+ IRLOC.provinces.forEach(function(p){p.cities.forEach(function(c){
+  if(out.length>=MAX)return;
+  if(IRLOC.norm(c.n).indexOf(n)>-1)out.push(opt(c.v,c.n,p.n));
+  c.groups.forEach(function(g){g.items.forEach(function(it){
+   if(out.length>=MAX)return;
+   if(IRLOC.norm(it.n).indexOf(n)>-1||IRLOC.norm(it.v).indexOf(n)>-1)out.push(opt(it.v,it.n,it.v===it.n?(c.n+'، '+p.n):(it.nb?'':c.n+'، '+p.n)))})})})});
+ return out.length?out.join(''):'<p class="hint" style="padding:8px 14px">جایی با این نام پیدا نشد.</p>'}
+function render(){var q=sq?sq.value.trim():'';body.innerHTML=q?searchRes(q):browse()}
+body.addEventListener('click',function(e){
+ var x=e.target.closest('.lexp');
+ if(x){e.stopPropagation();var c=x.getAttribute('data-c');open.c[c]=!open.c[c];render();return}
+ var p=e.target.closest('.lprov');
+ if(p){e.stopPropagation();var n=p.getAttribute('data-p');open.p[n]=!open.p[n];render()}});
+if(sq)sq.addEventListener('input',render);
+var pl=document.getElementById('pl');
+if(pl)pl.addEventListener('click',function(){
+ var c=cur();
+ if(sq)sq.value='';
+ if(c){IRLOC.provinces.forEach(function(p){p.cities.forEach(function(ct){
+   var hit=ct.v===c;ct.groups.forEach(function(g){g.items.forEach(function(it){if(it.v===c)hit=true})});
+   if(hit){open.p[p.n]=1;if(ct.groups.length)open.c[ct.n]=1}})})}
+ render()});
+render()})();
+
+</script>
 
 <div class="sheet" id="sh-date" role="dialog" aria-modal="true" aria-label="انتخاب زمان">
   <div class="grab"></div>
@@ -538,10 +720,25 @@ function norm(s){return String(s).replace(/ي/g,'ی').replace(/ك/g,'ک').replac
 function matchText(it){
 var toks=norm(st.q).split(/\s+/).filter(Boolean);if(!toks.length)return true;
 var hay=norm(it.t+' '+it.cn);return toks.every(function(t){return hay.indexOf(t)>-1})}
-function matchLoc(it){if(!st.loc)return true;if(st.loc==='نزدیک من')return it.km<=3;return it.nb===st.loc}
+function matchLoc(it){if(!st.loc)return true;if(st.loc==='نزدیک من')return it.km<=3;return IRLOC.match(it.nb,st.loc)}
 function matchPer(it){return !st.near||it.km<=2}
 function dayOff(d){return Math.round((d-today)/86400000)}
 function free(it){if(!st.a||!it.busy)return true;var s=dayOff(st.a),e=dayOff(st.b||st.a);return e<it.busy[0]||s>it.busy[1]}
+
+/* ---------- prices: one price in the row, the others behind a button ---------- */
+var OPENP={};
+function priceHtml(it){
+var ps=pricesOf(it),act=(F.per!=='all')?F.per:'',main=null;
+ps.forEach(function(p){if(p.k===act)main=p});
+var mt,mu;
+if(main){mt=main.p;mu=main.u}else{mt=it.pn;mu=it.u;ps.forEach(function(p){if(!act&&p.p===it.pn&&p.u===it.u&&!main)main=p})}
+var h='<div class="prw"><p class="pr">'+nf.format(mt)+' تومان <span>/ '+mu+'</span></p>';
+if(ps.length>1)h+='<button type="button" class="pbtn" aria-expanded="'+(!!OPENP[it.id])+'">قیمت‌های دیگر'+icon('chevron-left')+'</button>';
+h+='</div>';
+if(ps.length>1){h+='<div class="pps" style="display:'+(OPENP[it.id]?'block':'none')+'">';
+ps.forEach(function(p){h+='<div class="ppr'+((main&&p.k===main.k)?' on':'')+'"><span>'+p.n+'</span><b>'+nf.format(p.p)+' تومان</b><small>/ '+p.u+'</small></div>'});
+h+='</div>'}
+return h}
 
 function render(){
 var base=ITEMS.filter(function(it){return matchText(it)&&matchLoc(it)&&matchPer(it)&&matchF(it,F)});
@@ -555,8 +752,10 @@ list.forEach(function(it){
  r.innerHTML='<div class="th" style="background:var(--bg-tint-'+tint+')">'+icon(it.ic,'ic','color:var(--text-tint-'+tint+')')+(it.nw?'<span class="new">جدید</span>':'')+'<button class="heart" aria-label="ذخیره">'+icon('heart')+'</button></div>'
  +'<div class="bd"><p class="t">'+it.t+'</p><p class="m">'+rating+'<span>·</span><span>'+dist+'</span><span>·</span><span>'+it.nb+'</span></p>'
  +'<p class="m" style="margin-top:4px"><span class="tag">'+it.tag+'</span>'+(it.dep?'<span class="tag w">'+it.dep+'</span>':'')+'</p>'
- +'<p class="pr">'+nf.format(it.pn)+' تومان <span>/ '+it.u+'</span></p></div>';
+ +priceHtml(it)+'</div>';
  r.querySelector('.heart').addEventListener('click',function(e){e.stopPropagation();this.classList.toggle('on')});
+ var pb=r.querySelector('.pbtn');
+ if(pb)pb.addEventListener('click',function(e){e.stopPropagation();var o=!OPENP[it.id];OPENP[it.id]=o;this.setAttribute('aria-expanded',o);r.querySelector('.pps').style.display=o?'block':'none'});
  box.appendChild(r)});
 $('cnt').textContent=list.length?nf0.format(list.length)+' نتیجه'+(st.q.trim()?' برای «'+st.q.trim()+'»':''):'';
 $('empty').style.display=list.length?'none':'block';
@@ -594,8 +793,8 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeSheets(
 function setPlaceUI(){var t=$('plt');t.textContent=st.loc||'هر جا';t.className=st.loc?'set':'';$('pl').classList.toggle('has',!!st.loc);
 document.querySelectorAll('#locs .opt').forEach(function(o){o.classList.toggle('on',o.getAttribute('data-v')===st.loc)})}
 $('pl').addEventListener('click',function(){openSheet('sh-loc')});
-document.querySelectorAll('#locs .opt').forEach(function(o){o.addEventListener('click',function(){
-st.loc=o.getAttribute('data-v');setPlaceUI();render();setTimeout(closeSheets,120)})});
+$('locs').addEventListener('click',function(e){var o=e.target.closest('.opt');if(!o||e.target.closest('.lexp'))return;
+st.loc=o.getAttribute('data-v');setPlaceUI();render();setTimeout(closeSheets,120)});
 
 /* date */
 var months=[];
