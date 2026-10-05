@@ -537,6 +537,8 @@ a.brand:focus-visible,.dlinks a:focus-visible{outline:2px solid var(--border-acc
 .lsub{margin:0 0 6px}
 .sheet .lsub .opt{margin-right:34px}
 .lgt{font-size:12px;color:var(--text-secondary);padding:2px 34px 6px 14px}
+/* لوگوی «یارا» در نوار بالا: همان اندازه و رنگ و وزن (جلوگیری از اثر استایل برچسب گروه‌های مکان) */
+.topbar .brand .lgt{font-size:16px;font-weight:500;color:inherit;padding:0}
 .opt .a .b{font-weight:400;margin-right:4px}
 </style>
 <script>
@@ -996,9 +998,8 @@ var box=$('grid');box.innerHTML='';
 shown.forEach(function(it){
 var c=catBy[it.c],g=grpBy[c.g],card=document.createElement('div');card.className='card go';card.setAttribute('data-go','03-detail.html');
 var rating=it.v?'<span class="rt">'+glyph()+'<b>'+nf0.format(it.v)+'</b></span>':'<span class="rt">جدید</span>';
-var dist=it.km<1?nf0.format(it.km*1000)+' متر':nf0.format(it.km)+' کیلومتر';
 card.innerHTML='<div class="ph" style="background:var(--bg-tint-'+g.bg+')">'+icon(c.ic,'ic','color:var(--text-tint-'+g.bg+')')+'<button class="heart'+(liked[it.t]?' on':'')+'" aria-label="ذخیره">'+icon('heart')+'</button></div>'
-+'<div class="cbd"><p class="t">'+it.t+'</p><p class="m">'+rating+' · '+dist+'</p><p class="pr">'+it.p+' تومان <span>/ '+it.u+'</span></p></div>';
++'<div class="cbd"><p class="t">'+it.t+'</p><p class="m">'+rating+'</p><p class="pr">'+it.p+' تومان <span>/ '+it.u+'</span></p></div>';
 card.querySelector('.heart').addEventListener('click',function(e){e.stopPropagation();liked[it.t]=!liked[it.t];this.classList.toggle('on')});
 box.appendChild(card)});
 $('gempty').style.display=list.length?'none':'block';
