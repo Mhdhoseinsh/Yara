@@ -304,6 +304,7 @@ body.has-nav .scr{padding-bottom:calc(66px + 72px + env(safe-area-inset-bottom))
 </div>
 <p class="sub" id="note" style="display:none;padding:0 14px 8px;align-items:center;gap:6px"><i class="ti ti-calendar-off" style="font-size:16px" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-calendar-off"/></svg></i><span id="notet"></span></p>
 
+<p class="sub" id="gps" style="display:none;padding:0 14px 8px;color:var(--text-danger)"></p>
 <div id="list" style="margin-top:6px"></div>
 
 <div id="empty" style="display:none;padding:32px 20px;text-align:center;border-top:.5px solid var(--border)">
@@ -381,42 +382,34 @@ var P=[
 var D={
 'تهران':[
 ['منطقه ۱','تجریش،ولنجک،اقدسیه،زعفرانیه،الهیه،فرمانیه،قیطریه،دربند،نیاوران،جماران،دزاشیب'],
-['منطقه ۲','شهرک غرب،سعادت‌آباد،دریا،شهرک آپادانا،کوی فراز'],
-['منطقه ۳','ونک،جردن،میرداماد،پاسداران،دروس،دولت'],
-['منطقه ۴','تهران‌پارس،نارمک،حکیمیه،لویزان،شمیران‌نو'],
-['منطقه ۵','پونک،شهران،اکباتان،آریاشهر،المپیک،جنت‌آباد'],
-['منطقه ۶','یوسف‌آباد،گاندی،سهروردی،کوی نصر'],
-['منطقه ۷',''],['منطقه ۸',''],['منطقه ۹',''],['منطقه ۱۰',''],['منطقه ۱۱',''],['منطقه ۱۲','بازار،سرچشمه،عود‌لاجان'],['منطقه ۱۳',''],['منطقه ۱۴',''],['منطقه ۱۵',''],['منطقه ۱۶',''],['منطقه ۱۷',''],['منطقه ۱۸',''],['منطقه ۱۹',''],['منطقه ۲۰',''],['منطقه ۲۱',''],['منطقه ۲۲','چیتگر،دریاچه چیتگر']],
-'مشهد':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳،منطقه ۴،منطقه ۵،منطقه ۶،منطقه ۷،منطقه ۸،منطقه ۹،منطقه ۱۰،منطقه ۱۱،منطقه ۱۲،منطقه ۱۳']],
-'اصفهان':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳،منطقه ۴،منطقه ۵،منطقه ۶،منطقه ۷،منطقه ۸،منطقه ۹،منطقه ۱۰،منطقه ۱۱،منطقه ۱۲،منطقه ۱۳،منطقه ۱۴،منطقه ۱۵']],
-'شیراز':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳،منطقه ۴،منطقه ۵،منطقه ۶،منطقه ۷،منطقه ۸،منطقه ۹،منطقه ۱۰،منطقه ۱۱']],
-'تبریز':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳،منطقه ۴،منطقه ۵،منطقه ۶،منطقه ۷،منطقه ۸،منطقه ۹،منطقه ۱۰']],
-'کرج':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳،منطقه ۴،منطقه ۵،منطقه ۶،منطقه ۷،منطقه ۸،منطقه ۹،منطقه ۱۰']],
-'قم':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳،منطقه ۴،منطقه ۵،منطقه ۶،منطقه ۷،منطقه ۸']],
-'اهواز':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳،منطقه ۴،منطقه ۵،منطقه ۶،منطقه ۷،منطقه ۸']],
-'کرمانشاه':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳']],
-'ارومیه':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
-'رشت':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳']],
-'کرمان':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳']],
-'یزد':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳']],
-'همدان':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳']],
-'ساری':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳']],
-'اراک':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
-'اردبیل':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
-'زنجان':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
-'بندرعباس':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳']],
-'قزوین':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳']],
-'خرم‌آباد':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
-'سنندج':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
-'زاهدان':[['مناطق شهرداری','منطقه ۱،منطقه ۲،منطقه ۳']],
-'بوشهر':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
-'بیرجند':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
-'گرگان':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
-'بجنورد':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
-'ایلام':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
-'شهرکرد':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
-'یاسوج':[['مناطق شهرداری','منطقه ۱،منطقه ۲']],
-'سمنان':[['مناطق شهرداری','منطقه ۱،منطقه ۲']]
+['منطقه ۲','شهرک غرب،سعادت‌آباد،دریا،شهرک آپادانا،کوی فراز،شهرک قدس'],
+['منطقه ۳','ونک،جردن،میرداماد،پاسداران،دروس،دولت،ظفر،قلهک'],
+['منطقه ۴','تهران‌پارس،نارمک،حکیمیه،لویزان،شمیران‌نو،هنگام،هفت‌حوض'],
+['منطقه ۵','پونک،شهران،اکباتان،آریاشهر،المپیک،جنت‌آباد،صادقیه،کوی دانشگاه،ستارخان'],
+['منطقه ۶','یوسف‌آباد،گاندی،سهروردی،کوی نصر،فاطمی،امیرآباد،بلوار کشاورز،میدان ونک‌ جنوبی'],
+['منطقه ۷','عباس‌آباد،سیدخندان،بهار،شریعتی،سه‌راه امین‌حضور'],
+['منطقه ۸','تهران‌نو،نیروی هوایی،فلکه دوم تهران‌پارس'],
+['منطقه ۹','مهرآباد جنوبی،آزادی،فرودگاه مهرآباد'],
+['منطقه ۱۰','کارون،کارگر جنوبی،جی'],
+['منطقه ۱۱','منیریه،امام‌زاده حسن،جمهوری،راه‌آهن،انقلاب'],
+['منطقه ۱۲','بازار،سرچشمه،عود‌لاجان،پامنار،دروازه شمیران،بهارستان،امین‌حضور'],
+['منطقه ۱۳','پیروزی،سرسبز،نیروی هوایی شرقی'],
+['منطقه ۱۴','خراسان،نبرد،هرندی،مجیدیه'],
+['منطقه ۱۵','افسریه،خاوران،مولوی،شوش جنوبی'],
+['منطقه ۱۶','نازی‌آباد،خزانه،سلسبیل'],
+['منطقه ۱۷','ابوذر،جیحون،خانی‌آباد'],
+['منطقه ۱۸','شهرک ولیعصر،زاهد گیلانی،جاده ساوه'],
+['منطقه ۱۹','هفده شهریور،کوی ۱۷ شهریور،شمس‌آباد'],
+['منطقه ۲۰','شهرری،جاده قدیم قم،تقی‌آباد'],
+['منطقه ۲۱','شهرک چیتگر،شهرک آزادی،تهرانسر،سرو آزاد'],
+['منطقه ۲۲','چیتگر،دریاچه چیتگر،شهرک وصفنارد']],
+'مشهد':[['محله‌ها','هاشمیه،وکیل‌آباد،احمدآباد،بلوار سجاد،پیروزی،قاسم‌آباد،بلوار ملک‌آباد،توس،گلشهر،فرهنگ،کوهسنگی،الهیه،بلوار معلم،آزادشهر،سناباد،بهارستان،بلوار امامت،پنج‌تن،ثامن،رضاشهر']],
+'اصفهان':[['محله‌ها','چهارباغ،جلفا،خیابان کاوه،بزرگمهر،شهرک امام حسین،هشت بهشت،شهرک ولی‌عصر،مارنان،کوی امام،شهشهان،میدان نقش جهان،باغ فردوس،سپاهان‌شهر،چهارراه نظر']],
+'شیراز':[['محله‌ها','معالی‌آباد،قصردشت،ستارخان،ملاصدرا،چهارراه زند،بلوار چمران،گلدشت،شهرک گلستان،بلوار پاسداران،شهرک ولیعصر،بلوار فرهنگ‌شهر،کوی زهرا']],
+'تبریز':[['محله‌ها','ولیعصر،ائل‌گلی،چهارراه شهناز،رشدیه،باغمیشه،یاغچیان،منظریه،بلوار ۲۹ بهمن،ارتش،گلشهر،خیابان امام،آبرسان']],
+'کرج':[['محله‌ها','گوهردشت،مهرشهر،عظیمیه،جهانشهر،گلشهر،حصارک،باغستان،رجایی‌شهر،مارلیک،آزادگان،بلوار شاهد،ملک‌آباد']],
+'قم':[['محله‌ها','صفاییه،شهرک پردیسان،بلوار امین،نوبنیاد،چهارمردان،زنبیل‌آباد،نیروگاه،بلوار شهید صدوقی']],
+'اهواز':[['محله‌ها','کیانپارس،کیان‌آباد،زیتون کارمندی،گلستان،امانیه،ملی‌راه،لشگرآباد،چهارشیر،پردیس،کوروش']]
 };
 function sp(s){return s?s.split('،').map(function(x){return x.trim()}).filter(Boolean):[]}
 var provinces=[],SETS={},seen={};
@@ -456,7 +449,7 @@ var box=document.getElementById('locs'),sh=document.getElementById('sh-loc');
 if(!box||!sh||!window.IRLOC)return;
 var body=document.createElement('div');body.id='lbody';box.appendChild(body);
 var sq=document.getElementById('lsq');
-var open={p:{'تهران':1},c:{'تهران':1}};
+var open={p:{},c:{}};
 function cur(){return(typeof st!=='undefined'&&st&&typeof st.loc==='string')?st.loc:(typeof loc!=='undefined'?loc:'')}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
 function opt(v,n,sub,exp){var c=cur();
@@ -502,6 +495,30 @@ if(pl)pl.addEventListener('click',function(){
    var hit=ct.v===c;ct.groups.forEach(function(g){g.items.forEach(function(it){if(it.v===c)hit=true})});
    if(hit){open.p[p.n]=1;if(ct.groups.length)open.c[ct.n]=1}})})}
  render()});
+
+/* ===== «نزدیک من»: موقعیت واقعی کاربر ===== */
+var NM_KEY='yara_pos';
+window.nmMsg=function(c){return c===1?'دسترسی به موقعیت مکانی بسته است. در تنظیمات مرورگر اجازه دسترسی بده و دوباره امتحان کن.':c===3?'پیدا کردن موقعیت طول کشید. دوباره امتحان کن.':c===0?'موقعیت‌یابی در این مرورگر کار نمی‌کند، یا سایت با https باز نشده است.':'موقعیت مکانی در دسترس نیست. GPS یا اینترنت را بررسی کن.'};
+window.getNearMe=function(cb,force){
+ try{var c=JSON.parse(sessionStorage.getItem(NM_KEY));if(!force&&c&&typeof c.lat==='number'&&Date.now()-c.t<600000){cb(null,c);return}}catch(e){}
+ if(!navigator.geolocation||window.isSecureContext===false){cb({code:0});return}
+ function ok(p){var r={lat:p.coords.latitude,lng:p.coords.longitude,t:Date.now()};try{sessionStorage.setItem(NM_KEY,JSON.stringify(r))}catch(e){}cb(null,r)}
+ navigator.geolocation.getCurrentPosition(ok,function(e){var c=(e&&e.code)||2;
+  if(c===1){cb({code:1});return}
+  navigator.geolocation.getCurrentPosition(ok,function(e2){cb({code:(e2&&e2.code)||c})},{enableHighAccuracy:false,timeout:20000,maximumAge:300000})},{enableHighAccuracy:true,timeout:8000,maximumAge:60000})};
+var g=document.createElement('p');g.id='lgps';g.className='hint';g.style.cssText='padding:0 14px;display:none';sh.insertBefore(g,box);
+function gps(show,txt,bad){g.style.display=show?'block':'none';g.textContent=txt||'';g.style.color=bad?'var(--text-danger)':''}
+var allow=false;
+box.addEventListener('click',function(e){
+ var o=e.target.closest('.opt');if(!o||o.getAttribute('data-v')!=='نزدیک من')return;
+ if(allow){allow=false;return}
+ e.stopPropagation();e.preventDefault();
+ gps(true,'در حال پیدا کردن موقعیت تو…');
+ getNearMe(function(err,pos){
+  if(err){gps(true,nmMsg(err.code),1);return}
+  gps(false);
+  if(window.onNearMe)window.onNearMe(pos);
+  allow=true;o.click()},true)},true);
 render()})();
 
 </script>
@@ -720,7 +737,7 @@ function norm(s){return String(s).replace(/ي/g,'ی').replace(/ك/g,'ک').replac
 function matchText(it){
 var toks=norm(st.q).split(/\s+/).filter(Boolean);if(!toks.length)return true;
 var hay=norm(it.t+' '+it.cn);return toks.every(function(t){return hay.indexOf(t)>-1})}
-function matchLoc(it){if(!st.loc)return true;if(st.loc==='نزدیک من')return it.km<=3;return IRLOC.match(it.nb,st.loc)}
+function matchLoc(it){if(!st.loc)return true;if(st.loc==='نزدیک من')return POS?(NEAR_FAR||it.km<=5):true;return IRLOC.match(it.nb,st.loc)}
 function matchPer(it){return !st.near||it.km<=2}
 function dayOff(d){return Math.round((d-today)/86400000)}
 function free(it){if(!st.a||!it.busy)return true;var s=dayOff(st.a),e=dayOff(st.b||st.a);return e<it.busy[0]||s>it.busy[1]}
@@ -740,7 +757,19 @@ ps.forEach(function(p){h+='<div class="ppr'+((main&&p.k===main.k)?' on':'')+'"><
 h+='</div>'}
 return h}
 
+/* ---------- near me: real distance from the user's position ---------- */
+var COORD={'ونک':[35.7575,51.4097],'سعادت‌آباد':[35.7878,51.3772],'ولنجک':[35.8050,51.3950],'تجریش':[35.8043,51.4306],'شهرک غرب':[35.7640,51.3680],'پونک':[35.7600,51.3330],'جردن':[35.7700,51.4170]};
+var POS=null,NEAR_FAR=false;
+function applyPos(p){POS=p;var mn=1e9;ITEMS.forEach(function(it){var c=COORD[it.nb];if(!c)return;
+var R=6371,r=Math.PI/180,dl=(p.lat-c[0])*r,dg=(p.lng-c[1])*r,a=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(c[0]*r)*Math.cos(p.lat*r)*Math.sin(dg/2)*Math.sin(dg/2);
+it.km=Math.max(0.1,Math.round(2*R*Math.asin(Math.sqrt(a))*10)/10);if(it.km<mn)mn=it.km});NEAR_FAR=mn<1e9&&mn>5}
+function nearNote(){var g=$('gps');if(!g)return;
+if(st.loc==='نزدیک من'&&POS&&NEAR_FAR){g.textContent='در ۵ کیلومتری تو آگهی‌ای پیدا نشد؛ نزدیک‌ترین آگهی‌ها را از کمترین فاصله نشان می‌دهیم.';g.style.color='var(--text-secondary)';g.style.display='block';g.setAttribute('data-nm','1')}
+else if(g.getAttribute('data-nm')){g.removeAttribute('data-nm');g.style.display='none';g.style.color='var(--text-danger)'}}
+window.onNearMe=function(p){applyPos(p);$('gps').style.display='none'};
+
 function render(){
+nearNote();
 var base=ITEMS.filter(function(it){return matchText(it)&&matchLoc(it)&&matchPer(it)&&matchF(it,F)});
 var list=base.filter(free),hidden=base.length-list.length;
 list.sort(function(a,b){return F.sort==='d'?a.km-b.km:F.sort==='p'?a.pd-b.pd:F.sort==='n'?a.ag-b.ag:b.v-a.v});
@@ -848,6 +877,9 @@ $('q').value='';$('qc').style.display='none';setPlaceUI();setDateUI();
 filtUI();render()});
 
 setPlaceUI();setDateUI();filtUI();render();
+if(st.loc==='نزدیک من'){getNearMe(function(err,pos){
+if(err){st.loc='';setPlaceUI();var g=$('gps');g.textContent=nmMsg(err.code);g.style.display='block';render();return}
+applyPos(pos);render()})}
 </script>
 </body>
 </html>
