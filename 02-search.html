@@ -299,14 +299,17 @@ body.has-nav .scr{padding-bottom:calc(66px + 72px + env(safe-area-inset-bottom))
   </div>
   <div style="padding:8px 14px 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
     <button type="button" class="sfld pk" id="pl" aria-haspopup="dialog"><i class="ti ti-map-pin" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-map-pin"/></svg></i><span id="plt">هر جا</span><i class="ti ti-chevron-left chv" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-left"/></svg></i></button>
-    <button type="button" class="sfld pk" id="pd" aria-haspopup="dialog"><i class="ti ti-calendar" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-calendar"/></svg></i><span id="pdt">هر زمانی</span><i class="ti ti-chevron-left chv" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-left"/></svg></i></button>
+    <button type="button" class="sfld pk" id="pc" aria-haspopup="dialog"><i class="ti ti-category" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-category"/></svg></i><span id="pct">همه دسته‌ها</span><i class="ti ti-chevron-left chv" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-left"/></svg></i></button>
   </div>
 </div>
 
 <div style="padding-top:12px">
   <div class="chips" id="fil">
     <button class="chip" id="ff" data-go="09-filter.html"><i class="ti ti-adjustments-horizontal" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-adjustments-horizontal"/></svg></i><span id="fft">فیلترها</span></button>
-    <button class="chip sel" id="fcat" type="button" aria-haspopup="dialog"><i class="ti ti-category" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-category"/></svg></i><span id="fct">دسته‌بندی</span></button>
+    <button class="chip on" data-p="all">همه</button>
+    <button class="chip" data-p="h">ساعتی</button>
+    <button class="chip" data-p="d">روزانه</button>
+    <button class="chip" data-p="w">هفتگی</button>
     <button class="chip" data-p="near">تا ۲ کیلومتر</button>
   </div>
 </div>
@@ -335,7 +338,7 @@ body.has-nav .scr{padding-bottom:calc(66px + 72px + env(safe-area-inset-bottom))
   <div class="grab"></div>
   <div class="sh"><h2>کجا دنبالش می‌گردی؟</h2><button class="ib" data-close aria-label="بستن"><i class="ti ti-x" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></i></button></div>
   <p class="hint" style="padding:0 14px;margin-bottom:10px">اختیاری است. اگر انتخاب نکنی، همه جا را نشان می‌دهیم.</p>
-  <div id="lsqw"><label class="sfld" for="lsq"><i class="ti ti-search" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"/></svg></i><input type="text" id="lsq" placeholder="جستجوی استان، شهر یا منطقه…" maxlength="40" autocomplete="off"></label></div>
+  <div id="lsqw"><label class="sfld" for="lsq"><i class="ti ti-search" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"/></svg></i><input type="text" id="lsq" placeholder="جستجوی استان یا شهرستان…" maxlength="40" autocomplete="off"></label></div>
   <div id="locs">
     <div class="opt on" data-v=""><div class="rd"></div><span style="flex:1" class="a">هر جا</span><i class="ti ti-check ck" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg></i></div>
     <div class="opt" data-v="نزدیک من"><div class="rd"></div><span style="flex:1" class="a">نزدیک من</span><i class="ti ti-current-location ic" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-current-location"/></svg></i></div>
@@ -346,17 +349,13 @@ body.has-nav .scr{padding-bottom:calc(66px + 72px + env(safe-area-inset-bottom))
 #lsqw{padding:0 14px 10px;position:sticky;top:0;background:var(--surface-2);z-index:2}
 .lprov{display:flex;align-items:center;gap:8px;width:calc(100% - 28px);margin:0 14px 8px;min-height:48px;padding:0 14px;border:none;border-radius:12px;background:var(--surface-1);font-size:14px;font-weight:500;text-align:right;color:var(--text-primary)}
 .lprov .cn{flex:0 0 auto;font-size:12px;font-weight:400;color:var(--text-secondary)}
-.lprov i.chv,.lexp i.chv{transition:transform .15s}
+.lprov i.chv{transition:transform .15s}
 .lprov.open i.chv{transform:rotate(-90deg)}
-.lexp{flex:0 0 auto;display:flex;align-items:center;gap:2px;min-height:32px;padding:0 8px;border:none;background:transparent;color:var(--text-accent);font-size:12px;border-radius:8px}
-.lexp[aria-expanded="true"] i.chv{transform:rotate(-90deg)}
-.lsub{margin:0 0 6px}
-.sheet .lsub .opt{margin-right:34px}
 .lgt{font-size:12px;color:var(--text-secondary);padding:2px 34px 6px 14px}
 .opt .a .b{font-weight:400;margin-right:4px}
 </style>
 <script>
-/* ===== IR-LOCATIONS: استان‌ها، شهرها و مناطق (قابل ویرایش) ===== */
+/* ===== IR-LOCATIONS: استان‌ها و شهرستان‌ها (قابل ویرایش) ===== */
 var IRLOC=(function(){
 var P=[
 ['تهران','تهران،اسلامشهر،ری،شهریار،ورامین،پاکدشت،پردیس،بومهن،رودهن،دماوند،فیروزکوه،قدس،ملارد،بهارستان،نسیم‌شهر،قرچک،پیشوا،چهاردانگه،صباشهر،صالحیه،وحیدیه،کهریزک،باقرشهر،لواسان،شمیرانات،رباط‌کریم،باغستان،اندیشه،گلستان،نصیرشهر،فردوسیه،کیلان،آبسرد،آبعلی،جوادآباد،قیام‌دشت،شاهدشهر،حسن‌آباد'],
@@ -391,7 +390,7 @@ var P=[
 ['چهارمحال و بختیاری','شهرکرد،بروجن،لردگان،فارسان،کوهرنگ،اردل،سامان،بن،کیار،ناغان،جونقان،گندمان،فرادنبه،چلگرد،فرخ‌شهر،هفشجان،سودجان،بلداجی،گهرو،سورشجان،مال‌خلیفه،جوزدان'],
 ['کهگیلویه و بویراحمد','یاسوج،دوگنبدان،دهدشت،سی‌سخت،لیکک،چرام،بهمئی،باشت،گچساران،لنده،مادوان،سوق،سرفاریاب،پاتاوه،دیشموک،لوداب،مارگون،چیتاب،قلعه رئیسی،مهر'],
 ];
-/* مناطق/محله‌ها: [شهر, گروه‌ها] */
+/* محله‌ها: فقط برای تطبیق آگهی‌ها با شهر انتخابی استفاده می‌شود و در انتخاب مکان نمایش داده نمی‌شود */
 var D={
 'تهران':[
 ['منطقه ۱','تجریش،ولنجک،اقدسیه،زعفرانیه،الهیه،فرمانیه،قیطریه،دربند،نیاوران،جماران،دزاشیب،امامزاده قاسم،گلابدره،کامرانیه،دارآباد،سوهانک،اوین،چیذر'],
@@ -471,41 +470,28 @@ var box=document.getElementById('locs'),sh=document.getElementById('sh-loc');
 if(!box||!sh||!window.IRLOC)return;
 var body=document.createElement('div');body.id='lbody';box.appendChild(body);
 var sq=document.getElementById('lsq');
-var open={p:{},c:{}};
+var open={p:{}};
 function cur(){return(typeof st!=='undefined'&&st&&typeof st.loc==='string')?st.loc:(typeof loc!=='undefined'?loc:'')}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
 function opt(v,n,sub,exp){var c=cur();
  return '<div class="opt'+(v===c?' on':'')+'" data-v="'+esc(v)+'"><div class="rd"></div><span style="flex:1" class="a">'+esc(n)+(sub?' <span class="b">'+esc(sub)+'</span>':'')+'</span>'+(exp||'')+'</div>'}
 function chv(){return '<i class="ti ti-chevron-left chv" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-left"/></svg></i>'}
-function cityHtml(c){
- var has=c.groups.length>0,isOpen=!!open.c[c.n];
- var h=opt(c.v,c.n,'',has?'<button type="button" class="lexp" data-c="'+esc(c.n)+'" aria-expanded="'+isOpen+'">مناطق '+chv()+'</button>':'');
- if(has&&isOpen){h+='<div class="lsub">';
-  c.groups.forEach(function(g){
-   if(!(c.n==='تهران'&&g.items.length&&g.n.indexOf('منطقه')===0))h+='<div class="lgt">'+esc(g.n)+'</div>';
-   g.items.forEach(function(it){h+=opt(it.v,it.n,it.nb?'':'')})});
-  h+='</div>'}
- return h}
+function cityHtml(c){return opt(c.v,c.n,'')}
 function browse(){
  var h='';
  IRLOC.provinces.forEach(function(p){
   var isOpen=!!open.p[p.n];
-  h+='<button type="button" class="lprov'+(isOpen?' open':'')+'" data-p="'+esc(p.n)+'" aria-expanded="'+isOpen+'"><span style="flex:1">'+esc(p.n)+'</span><span class="cn">'+p.cities.length.toLocaleString('fa-IR')+' شهر</span>'+chv()+'</button>';
+  h+='<button type="button" class="lprov'+(isOpen?' open':'')+'" data-p="'+esc(p.n)+'" aria-expanded="'+isOpen+'"><span style="flex:1">'+esc(p.n)+'</span><span class="cn">'+p.cities.length.toLocaleString('fa-IR')+' شهرستان</span>'+chv()+'</button>';
   if(isOpen)p.cities.forEach(function(c){h+=cityHtml(c)})});
  return h}
 function searchRes(q){
  var n=IRLOC.norm(q),out=[],MAX=60;
- IRLOC.provinces.forEach(function(p){p.cities.forEach(function(c){
-  if(out.length>=MAX)return;
-  if(IRLOC.norm(c.n).indexOf(n)>-1)out.push(opt(c.v,c.n,p.n));
-  c.groups.forEach(function(g){g.items.forEach(function(it){
-   if(out.length>=MAX)return;
-   if(IRLOC.norm(it.n).indexOf(n)>-1||IRLOC.norm(it.v).indexOf(n)>-1)out.push(opt(it.v,it.n,it.v===it.n?(c.n+'، '+p.n):(it.nb?'':c.n+'، '+p.n)))})})})});
+ IRLOC.provinces.forEach(function(p){
+  var pm=IRLOC.norm(p.n).indexOf(n)>-1;
+  p.cities.forEach(function(c){if(out.length>=MAX)return;if(pm||IRLOC.norm(c.n).indexOf(n)>-1)out.push(opt(c.v,c.n,p.n))})});
  return out.length?out.join(''):'<p class="hint" style="padding:8px 14px">جایی با این نام پیدا نشد.</p>'}
 function render(){var q=sq?sq.value.trim():'';body.innerHTML=q?searchRes(q):browse()}
 body.addEventListener('click',function(e){
- var x=e.target.closest('.lexp');
- if(x){e.stopPropagation();var c=x.getAttribute('data-c');open.c[c]=!open.c[c];render();return}
  var p=e.target.closest('.lprov');
  if(p){e.stopPropagation();var n=p.getAttribute('data-p');open.p[n]=!open.p[n];render()}});
 if(sq)sq.addEventListener('input',render);
@@ -513,9 +499,7 @@ var pl=document.getElementById('pl');
 if(pl)pl.addEventListener('click',function(){
  var c=cur();
  if(sq)sq.value='';
- if(c){IRLOC.provinces.forEach(function(p){p.cities.forEach(function(ct){
-   var hit=ct.v===c;ct.groups.forEach(function(g){g.items.forEach(function(it){if(it.v===c)hit=true})});
-   if(hit){open.p[p.n]=1;if(ct.groups.length)open.c[ct.n]=1}})})}
+ if(c){IRLOC.provinces.forEach(function(p){p.cities.forEach(function(ct){if(ct.v===c)open.p[p.n]=1})})}
  render()});
 
 /* ===== «نزدیک من»: موقعیت واقعی کاربر ===== */
@@ -544,25 +528,6 @@ box.addEventListener('click',function(e){
 render()})();
 
 </script>
-
-<div class="sheet" id="sh-date" role="dialog" aria-modal="true" aria-label="انتخاب زمان">
-  <div class="grab"></div>
-  <div class="sh"><h2>کی لازم داری؟</h2><button class="lk" id="dclr">پاک کردن</button><button class="ib" data-close aria-label="بستن"><i class="ti ti-x" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></i></button></div>
-  <div class="qk">
-    <button class="chip" data-q="today">امروز</button><button class="chip" data-q="tomorrow">فردا</button><button class="chip" data-q="weekend">آخر هفته</button>
-  </div>
-  <div class="mnav">
-    <button id="mprev" aria-label="ماه قبل"><i class="ti ti-chevron-right" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"/></svg></i></button>
-    <b id="mtitle" style="font-weight:500;font-size:15px"></b>
-    <button id="mnext" aria-label="ماه بعد"><i class="ti ti-chevron-left" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-left"/></svg></i></button>
-  </div>
-  <div class="wk"><span>ش</span><span>ی</span><span>د</span><span>س</span><span>چ</span><span>پ</span><span>ج</span></div>
-  <div class="cal" id="cal"></div>
-  <div class="dfoot">
-    <div style="flex:1;min-width:0"><p id="dsum" style="font-size:14px;font-weight:500">تاریخ را انتخاب کن</p><p class="sub" id="dhint">روز شروع و پایان را لمس کن. اختیاری است.</p></div>
-    <button class="pbx" id="dok" style="min-height:46px">تأیید</button>
-  </div>
-</div>
 
 <div class="sheet" id="sh-cat" role="dialog" aria-modal="true" aria-label="همه دسته‌ها">
   <div class="grab"></div>
@@ -730,13 +695,13 @@ var FKEY='yara_filters';
 function cleanF(o){o=(o&&typeof o==='object')?o:{};
 var n=function(v,lo,hi,d){v=parseInt(v,10);return(isFinite(v)&&v>=lo&&v<=hi)?v:d};
 var inn=function(v,list,d){return list.indexOf(v)>-1?v:d};
-return{sort:inn(o.sort,['d','p','r','n'],'d'),per:'all',
+return{sort:inn(o.sort,['d','p','r','n'],'d'),per:inn(o.per,['all','h','d','w'],'all'),
 min:n(o.min,0,100000000,0),max:n(o.max,0,100000000,0),km:n(o.km,1,20,20),
 meet:o.meet===true,courier:o.courier===true,rt:inn(o.rt,['0','4','45'],'0'),vf:o.vf===true}}
 function loadF(){var r=null;try{r=JSON.parse(localStorage.getItem(FKEY))}catch(e){}return cleanF(r)}
 function saveF(f){try{localStorage.setItem(FKEY,JSON.stringify(cleanF(f)))}catch(e){}}
 function clearF(){try{localStorage.removeItem(FKEY)}catch(e){}}
-function activeCount(f){return((f.min||f.max)?1:0)+(f.km<20?1:0)+((f.meet||f.courier)?1:0)+(f.rt!=='0'?1:0)+(f.vf?1:0)}
+function activeCount(f){return(f.per!=='all'?1:0)+((f.min||f.max)?1:0)+(f.km<20?1:0)+((f.meet||f.courier)?1:0)+(f.rt!=='0'?1:0)+(f.vf?1:0)}
 function matchF(it,f){
 if(f.per!=='all'&&it.per.indexOf(f.per)<0)return false;
 if(f.min&&it.pd<f.min)return false;
@@ -805,7 +770,6 @@ try{if(window.name&&window.name.indexOf('yara:')===0)window.name='';sessionStora
 if(!o)return;
 st.q=o.q;st.loc=o.loc;
 var a=pdate(o.ds),b=pdate(o.de);
-if(a&&a>=today){st.a=a;st.b=(b&&b>=a)?b:null}
 })();
 
 /* ---------- filtering ---------- */
@@ -880,23 +844,22 @@ $('fft').textContent=n?'فیلترها · '+nf0.format(n):'فیلترها';
 $('ff').classList.toggle('on',n>0);
 $('fclr').style.display=n?'inline-block':'none';
 $('srt').value=F.sort;
-document.querySelectorAll('#fil .chip[data-p]').forEach(function(x){x.classList.toggle('on',st.near)})}
+document.querySelectorAll('#fil .chip[data-p]').forEach(function(x){var p=x.getAttribute('data-p');x.classList.toggle('on',p==='near'?st.near:(p===F.per&&!st.near))})}
 document.querySelectorAll('#fil .chip[data-p]').forEach(function(b){b.addEventListener('click',function(){
-st.near=!st.near;
+var p=b.getAttribute('data-p');
+if(p==='near'){st.near=!st.near}else{st.near=false;F.per=p;saveF(F)}
 filtUI();render()})});
 $('srt').addEventListener('change',function(){F.sort=cleanF({sort:this.value}).sort;saveF(F);render()});
 $('fclr').addEventListener('click',function(){F=cleanF({});clearF();st.near=false;cat={type:'all',key:''};renderCatBar();filtUI();render()});
 
-/* ---------- category filter: one chip in the filter row opens the full list in a sheet ---------- */
+/* ---------- categories: group row, sub-category row and a full list in a sheet ---------- */
 /* «سایر» یک دکمه‌ی واحد است: انتخاب «متفرقه» همان انتخاب گروه سایر است و دکمه‌ی اضافه نمی‌آورد */
 function normCat(type,key){return(type==='cat'&&catBy[key]&&catBy[key].g==='other')?{type:'group',key:'other'}:{type:type,key:key}}
 function matchCat(it){if(cat.type==='all')return true;if(cat.type==='cat')return it.c===cat.key;return it.g===cat.key}
 function countFor(type,key){return ITEMS.filter(function(it){return type==='cat'?it.c===key:it.g===key}).length}
 function renderCatBar(){
 var c=cat.type==='cat'?catBy[cat.key]:cat.type==='group'?grpBy[cat.key]:null;
-$('fct').textContent=c?c.n:'دسته‌بندی';
-$('fcat').classList.toggle('on',!!c)}
-$('fcat').addEventListener('click',openCats);
+var t=$('pct');t.textContent=c?c.n:'همه دسته‌ها';t.className=c?'set':'';$('pc').classList.toggle('has',!!c)}
 function chooseCat(type,key){cat=normCat(type,key);renderCatBar();filtUI();render()}
 /* full list (sheet) */
 function renderCats(q){
@@ -923,6 +886,7 @@ GROUPS.forEach(function(g){
   grid.appendChild(t)});
  box.appendChild(grid)});
 jb.style.display=(q||!any)?'none':'flex';$('cnone').style.display=any?'none':'block'}
+$('pc').addEventListener('click',function(){openCats()});
 function openCats(){$('cs').value='';renderCats('');openSheet('sh-cat')}
 $('cs').addEventListener('input',function(){renderCats(this.value)});
 $('call').addEventListener('click',function(){chooseCat('all','');closeSheets()});
@@ -940,61 +904,16 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeSheets(
 function setPlaceUI(){var t=$('plt');t.textContent=st.loc||'هر جا';t.className=st.loc?'set':'';$('pl').classList.toggle('has',!!st.loc);
 document.querySelectorAll('#locs .opt').forEach(function(o){o.classList.toggle('on',o.getAttribute('data-v')===st.loc)})}
 $('pl').addEventListener('click',function(){openSheet('sh-loc')});
-$('locs').addEventListener('click',function(e){var o=e.target.closest('.opt');if(!o||e.target.closest('.lexp'))return;
+$('locs').addEventListener('click',function(e){var o=e.target.closest('.opt');if(!o)return;
 st.loc=o.getAttribute('data-v');setPlaceUI();render();setTimeout(closeSheets,120)});
-
-/* date */
-var months=[];
-(function(){var s=addDays(today,-(jp(today).day-1));
-for(var i=0;i<4;i++){var m=jp(s).month,len=0;while(len<32&&jp(addDays(s,len)).month===m)len++;
-months.push({start:new Date(s),len:len,title:mf.format(s)+' '+nf0.format(jp(s).year)});s=addDays(s,len)}})();
-var mi=0,ca=null,cb=null; /* calendar working selection */
-function drawCal(){
-var m=months[mi];$('mtitle').textContent=m.title;
-$('mprev').style.visibility=mi===0?'hidden':'visible';$('mnext').style.visibility=mi===months.length-1?'hidden':'visible';
-var box=$('cal');box.innerHTML='';
-var blanks=(m.start.getDay()+1)%7;
-for(var i=0;i<blanks;i++)box.appendChild(document.createElement('span'));
-for(var k=0;k<m.len;k++){(function(k){
-var d=addDays(m.start,k),bt=document.createElement('button');bt.type='button';bt.className='day';bt.textContent=nf0.format(k+1);
-if(d<today){bt.className+=' dis';bt.setAttribute('aria-disabled','true')}
-if(same(d,today))bt.className+=' today';
-if(ca&&cb&&d>ca&&d<cb)bt.className+=' rng';
-if(same(d,ca)||same(d,cb))bt.className+=' sel';
-bt.addEventListener('click',function(){
-if(d<today){$('dhint').textContent='تاریخ گذشته را نمی‌شود انتخاب کرد.';$('dhint').style.color='var(--text-danger)';return}
-$('dhint').style.color='';
-if(!ca||(ca&&cb)){ca=d;cb=null}else if(d<ca){ca=d;cb=null}else{cb=d}
-drawCal();sum()});
-box.appendChild(bt)})(k)}
-}
-function clab(){if(!ca)return '';if(!cb||same(ca,cb))return lab(ca);return jp(ca).month===jp(cb).month?nf0.format(jp(ca).day)+' تا '+lab(cb):lab(ca)+' تا '+lab(cb)}
-function sum(){
-var h=$('dhint');h.style.color='';
-if(!ca){$('dsum').textContent='تاریخ را انتخاب کن';h.textContent='روز شروع و پایان را لمس کن. اختیاری است.'}
-else if(!cb){$('dsum').textContent='از '+lab(ca);h.textContent='روز پایان را لمس کن، یا برای یک روز «تأیید» را بزن.'}
-else{var days=Math.round((cb-ca)/86400000)+1;$('dsum').textContent=clab();h.textContent=nf0.format(days)+' روز'}}
-function monthOf(d){for(var i=0;i<months.length;i++){if(d>=months[i].start&&d<addDays(months[i].start,months[i].len))return i}return 0}
-function setDateUI(){var t=$('pdt'),l=rangeLabel();t.textContent=l||'هر زمانی';t.className=l?'set':'';$('pd').classList.toggle('has',!!l)}
-$('mprev').addEventListener('click',function(){if(mi>0){mi--;drawCal()}});
-$('mnext').addEventListener('click',function(){if(mi<months.length-1){mi++;drawCal()}});
-document.querySelectorAll('.qk .chip').forEach(function(c){c.addEventListener('click',function(){
-var q=c.getAttribute('data-q');
-if(q==='today'){ca=today;cb=null}
-else if(q==='tomorrow'){ca=addDays(today,1);cb=null}
-else{var d=new Date(today);while(d.getDay()!==4)d=addDays(d,1);ca=d;cb=addDays(d,1)}
-mi=monthOf(ca);drawCal();sum()})});
-$('pd').addEventListener('click',function(){ca=st.a;cb=st.b;mi=ca?monthOf(ca):0;drawCal();sum();openSheet('sh-date')});
-$('dclr').addEventListener('click',function(){ca=null;cb=null;drawCal();sum()});
-$('dok').addEventListener('click',function(){st.a=ca;st.b=ca?cb:null;setDateUI();render();closeSheets()});
 
 /* reset everything from the empty state */
 $('reset').addEventListener('click',function(){
-st.q='';st.loc='';st.a=null;st.b=null;st.near=false;F=cleanF({});clearF();cat={type:'all',key:''};renderCatBar();
-$('q').value='';$('qc').style.display='none';setPlaceUI();setDateUI();
+st.q='';st.loc='';st.near=false;F=cleanF({});clearF();cat={type:'all',key:''};renderCatBar();
+$('q').value='';$('qc').style.display='none';setPlaceUI();
 filtUI();render()});
 
-setPlaceUI();setDateUI();filtUI();renderCatBar();render();
+setPlaceUI();filtUI();renderCatBar();render();
 if(st.loc==='نزدیک من'){getNearMe(function(err,pos){
 if(err){st.loc='';setPlaceUI();var g=$('gps');g.textContent=nmMsg(err.code);g.style.display='block';render();return}
 applyPos(pos);render()})}
