@@ -354,7 +354,6 @@ a.brand:focus-visible,.dlinks a:focus-visible{outline:2px solid var(--border-acc
  #pl{grid-column:2;grid-row:1}
  #pd{grid-column:3;grid-row:1}
  #go{grid-column:4;grid-row:1;width:auto;padding:0 30px;white-space:nowrap}
- #qe{grid-column:1/-1;grid-row:2}
  .sfld{min-height:54px}
  .mos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
  .mt{aspect-ratio:1;border:none;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:500;transition:transform .15s}
@@ -405,44 +404,22 @@ a.brand:focus-visible,.dlinks a:focus-visible{outline:2px solid var(--border-acc
 @media (min-width:1100px) and (max-width:1279px){
  .sform{grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto}
  .sform>label.sfld{grid-column:1/-1;grid-row:1}
- #qe{grid-column:1/-1;grid-row:2}
- #pl{grid-column:1;grid-row:3}
- #pd{grid-column:2;grid-row:3}
- #go{grid-column:3;grid-row:3}
+ #pl{grid-column:1;grid-row:2}
+ #pd{grid-column:2;grid-row:2}
+ #go{grid-column:3;grid-row:2}
 }
 
 /* ===== دیالوگ ثبت‌نام ===== */
-#sh-reg{padding-bottom:max(16px,env(safe-area-inset-bottom));overflow-x:hidden}
-#sh-reg .rg-x{position:absolute;top:10px;left:10px;z-index:2;background:rgba(255,255,255,.55);border:none;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
-@media (prefers-color-scheme:dark){#sh-reg .rg-x{background:rgba(0,0,0,.35)}}
-#sh-reg .rg-hero{position:relative;padding:34px 20px 26px;text-align:center;background:linear-gradient(160deg,var(--bg-accent) 0%,var(--bg-tint-violet) 55%,var(--bg-tint-aqua) 100%);overflow:hidden}
-#sh-reg .rg-hero::before,#sh-reg .rg-hero::after{content:"";position:absolute;border-radius:50%;background:var(--bg-accent-muted);pointer-events:none}
-#sh-reg .rg-hero::before{width:150px;height:150px;top:-60px;right:-40px}
-#sh-reg .rg-hero::after{width:110px;height:110px;bottom:-50px;left:-30px}
-#sh-reg .rg-logo{position:relative;z-index:1;width:68px;height:68px;margin:0 auto 14px;border-radius:20px;background:var(--fill-accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px var(--bg-accent-muted)}
-#sh-reg .rg-logo i{font-size:34px}
-#sh-reg .rg-logo::after{content:"";position:absolute;inset:-7px;border-radius:26px;border:1.5px solid var(--border-accent);opacity:.35}
-#sh-reg .rg-hero h2{position:relative;z-index:1;font-size:20px;font-weight:600;line-height:1.7;margin-bottom:4px}
-#sh-reg .rg-hero p{position:relative;z-index:1;font-size:13px;color:var(--text-secondary);line-height:1.9}
-#sh-reg .rg-list{padding:16px 18px 6px;display:grid;gap:10px}
-#sh-reg .rg-it{display:flex;align-items:center;gap:12px}
-#sh-reg .rg-it .rg-ic{width:40px;height:40px;border-radius:12px;flex:0 0 40px;display:flex;align-items:center;justify-content:center}
-#sh-reg .rg-ic i{font-size:20px}
-#sh-reg .rg-it div b{display:block;font-size:14px;font-weight:600;line-height:1.6}
-#sh-reg .rg-it div span{display:block;font-size:12px;color:var(--text-secondary);line-height:1.7}
-#sh-reg .rg-acts{padding:14px 18px 0}
-#sh-reg .rg-go{display:flex;align-items:center;justify-content:center;gap:8px;min-height:50px;border-radius:14px;box-shadow:0 8px 18px var(--bg-accent-muted)}
-#sh-reg .rg-go i{font-size:18px}
-#sh-reg .rg-later{width:100%;margin-top:6px;border:none;background:transparent;color:var(--text-secondary);font-size:13px;min-height:44px}
-#sh-reg.open .rg-logo{animation:rgpop .5s cubic-bezier(.2,1.3,.4,1) both}
-#sh-reg.open .rg-it{animation:rgin .45s ease both}
-#sh-reg.open .rg-it:nth-child(1){animation-delay:.12s}
-#sh-reg.open .rg-it:nth-child(2){animation-delay:.2s}
-#sh-reg.open .rg-it:nth-child(3){animation-delay:.28s}
-@keyframes rgpop{from{transform:scale(.4) rotate(-12deg);opacity:0}to{transform:none;opacity:1}}
-@keyframes rgin{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
-@media (prefers-reduced-motion:reduce){#sh-reg.open .rg-logo,#sh-reg.open .rg-it{animation:none}}
-@media (min-width:900px){#sh-reg{max-width:440px}}
+#sh-reg{padding-bottom:max(16px,env(safe-area-inset-bottom))}
+#sh-reg .rg-x{position:absolute;top:8px;left:8px;border:none;background:transparent;color:var(--text-secondary)}
+#sh-reg .rg-body{padding:22px 22px 8px;text-align:center}
+#sh-reg .rg-mark{width:52px;height:52px;margin:0 auto 14px;border-radius:14px;background:var(--bg-accent);color:var(--text-accent);display:flex;align-items:center;justify-content:center}
+#sh-reg .rg-mark i{font-size:26px}
+#sh-reg h2{font-size:18px;font-weight:600;margin-bottom:6px}
+#sh-reg .rg-body p{font-size:13px;color:var(--text-secondary);line-height:1.9;margin:0 0 20px}
+#sh-reg .rg-go{border-radius:12px}
+#sh-reg .rg-later{width:100%;margin-top:4px;border:none;background:transparent;color:var(--text-secondary);font-size:13px;min-height:44px}
+@media (min-width:900px){#sh-reg{max-width:400px}}
 
 /* ===== دیالوگ تماس با ما ===== */
 #sh-contact a.opt{text-decoration:none;color:inherit;gap:14px;padding:14px}
@@ -475,8 +452,7 @@ a.brand:focus-visible,.dlinks a:focus-visible{outline:2px solid var(--border-acc
   <h1 class="h1">هر چی لازم داری، همین نزدیکی پیدا می‌شه</h1>
   <p class="hint lead">از همسایه‌هات وسیله بگیر. ساعتی، روزانه یا هفتگی، با پرداخت امن و ودیعه برگشتی.</p>
   <div class="sform">
-    <label class="sfld" for="q"><i class="ti ti-search" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"/></svg></i><input type="text" id="q" placeholder="دریل، دوربین، چادر…" autocomplete="off" enterkeyhint="search" aria-describedby="qe"></label>
-    <p class="er" id="qe" role="alert" style="margin:0">چیزی که دنبالش هستی را بنویس.</p>
+    <label class="sfld" for="q"><i class="ti ti-search" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"/></svg></i><input type="text" id="q" placeholder="دریل، دوربین، چادر…" autocomplete="off" enterkeyhint="search"></label>
     <div class="srow">
       <button type="button" class="sfld" id="pl" aria-haspopup="dialog"><i class="ti ti-map-pin" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-map-pin"/></svg></i><span id="plt">هر جا</span><i class="ti ti-chevron-left chv" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-left"/></svg></i></button>
       <button type="button" class="sfld" id="pd" aria-haspopup="dialog"><i class="ti ti-calendar" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-calendar"/></svg></i><span id="pdt">هر زمانی</span><i class="ti ti-chevron-left chv" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-left"/></svg></i></button>
@@ -781,21 +757,15 @@ render()})();
   <p id="cnone" class="hint" style="display:none;text-align:center;padding:24px 14px">دسته‌ای با این نام پیدا نشد.</p>
 </div>
 
-<div class="sheet" id="sh-reg" role="dialog" aria-modal="true" aria-labelledby="rg-t">
+<div class="sheet" id="sh-reg" role="dialog" aria-modal="true" aria-labelledby="rg-t" aria-describedby="rg-d">
+  <div class="grab"></div>
   <button class="ib rg-x" data-close aria-label="بستن"><i class="ti ti-x" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></i></button>
-  <div class="rg-hero">
-    <div class="rg-logo"><i class="ti ti-key" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-key"/></svg></i></div>
-    <h2 id="rg-t">به یارا خوش اومدی!</h2>
-    <p>با یک ثبت‌نام ساده، وسایل همسایه‌هات رو ببین و وسیله‌هات رو به درآمد تبدیل کن.</p>
-  </div>
-  <div class="rg-list">
-    <div class="rg-it"><span class="rg-ic" style="background:var(--bg-tint-violet);color:var(--text-tint-violet)"><i class="ti ti-search" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"/></svg></i></span><div><b>همه وسایل رو ببین</b><span>صدها وسیله‌ی قابل اجاره، از دریل تا دوربین</span></div></div>
-    <div class="rg-it"><span class="rg-ic" style="background:var(--bg-tint-green);color:var(--text-tint-green)"><i class="ti ti-shield-check" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-shield-check"/></svg></i></span><div><b>پرداخت امن، ودیعه‌ی برگشتی</b><span>پول و وسیله هر دو تحت حمایت هستن</span></div></div>
-    <div class="rg-it"><span class="rg-ic" style="background:var(--bg-tint-orange);color:var(--text-tint-orange)"><i class="ti ti-coin" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-coin"/></svg></i></span><div><b>وسیله‌ات رو ثبت کن، درآمد بساز</b><span>قیمت ساعتی یا روزانه خودت تعیین می‌کنی</span></div></div>
-  </div>
-  <div class="rg-acts">
-    <button class="pb rg-go" data-go="12-signup.html"><i class="ti ti-user" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-user"/></svg></i><span>ورود / ثبت‌نام با شماره موبایل</span></button>
-    <button class="rg-later" data-close type="button">فعلاً نه، بعداً</button>
+  <div class="rg-body">
+    <span class="rg-mark"><i class="ti ti-user" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-user"/></svg></i></span>
+    <h2 id="rg-t">ورود یا ثبت‌نام</h2>
+    <p id="rg-d">برای ثبت وسیله، ارسال پیام و رزرو، وارد حساب یارا شو.</p>
+    <button class="pb rg-go" data-go="12-signup.html">ادامه با شماره موبایل</button>
+    <button class="rg-later" data-close type="button">بعداً</button>
   </div>
 </div>
 
@@ -887,7 +857,7 @@ if(!document.querySelector('.cont'))document.querySelectorAll('.chips:not(.wrap)
 
 </script>
 <script>
-/* ---------- search: text is required, place and date are optional ---------- */
+/* ---------- search: text, place and date are all optional ---------- */
 var loc='',dlabel='';
 function openSheet(id){$('ov').classList.add('open');$(id).classList.add('open');document.body.style.overflow='hidden'}
 function closeSheets(){$('ov').classList.remove('open');document.querySelectorAll('.sheet').forEach(function(x){x.classList.remove('open')});document.body.style.overflow=''}
@@ -897,15 +867,14 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeSheets(
 
 function doSearch(){
 var t=$('q').value.trim();
-if(!t){$('qe').style.display='block';$('q').focus();return}
 var ds=(dlabel&&a)?iso(a):'',de=(dlabel&&a&&b)?iso(b):'';
 try{var pk=JSON.stringify({q:t,loc:loc,d:dlabel,ds:ds,de:de});window.name='yara:'+pk;sessionStorage.setItem('yara_search',pk)}catch(e){}
-var u='02-search.html?q='+encodeURIComponent(t)+(loc?'&loc='+encodeURIComponent(loc):'')+(dlabel?'&d='+encodeURIComponent(dlabel):'')+(ds?'&ds='+ds:'')+(de?'&de='+de:'');
+var ps=[];if(t)ps.push('q='+encodeURIComponent(t));if(loc)ps.push('loc='+encodeURIComponent(loc));if(dlabel)ps.push('d='+encodeURIComponent(dlabel));if(ds)ps.push('ds='+ds);if(de)ps.push('de='+de);
+var u='02-search.html'+(ps.length?'?'+ps.join('&'):'');
 location.href=u}
 function iso(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
 $('go').addEventListener('click',doSearch);
 $('q').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();doSearch()}});
-$('q').addEventListener('input',function(){$('qe').style.display='none'});
 
 /* place picker */
 $('pl').addEventListener('click',function(){openSheet('sh-loc')});
