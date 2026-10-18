@@ -443,7 +443,7 @@ body.has-nav .scr{padding-bottom:0}
 .fgrid a{display:block;color:inherit;text-decoration:none}
 .fgrid a:hover{color:var(--text-primary)}
 .copy{margin:20px 0 0;font-size:12px;color:var(--text-muted)}
-#sh-contact{max-width:440px}
+#sh-contact,#sh-reg{max-width:440px}
 
 /* برگه‌های پایین ← پنجره‌ی وسط صفحه */
 .sheet{top:50%;bottom:auto;max-width:640px;max-height:82vh;border-radius:20px;padding-bottom:16px;transform:translate(-50%,-50%)}
@@ -653,6 +653,16 @@ render()})();
  </div>
  <p class="copy">© ۱۴۰۵ یارا</p>
 </footer>
+
+<div class="sheet" id="sh-reg" role="dialog" aria-modal="true" aria-labelledby="rg-t">
+  <div class="grab"></div>
+  <div class="sh"><h2 id="rg-t">برای ادامه وارد شو</h2><button class="ib" data-close aria-label="بستن"><i class="ti ti-x" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></i></button></div>
+  <p class="hint" style="padding:0 14px;margin:0 0 14px">برای ثبت وسیله، پیام دادن، ذخیره‌ی وسایل و دیدن پروفایل، وارد حساب خودت شو یا ثبت‌نام کن.</p>
+  <div style="padding:0 14px 6px">
+    <button class="pb rg-go" data-go="12-signup.html" type="button">ورود یا ثبت‌نام</button>
+    <button type="button" data-close style="width:100%;min-height:44px;margin-top:6px;border:none;background:transparent;color:var(--text-secondary);font-size:13px">فعلاً نه</button>
+  </div>
+</div>
 
 <div class="sheet" id="sh-contact" role="dialog" aria-modal="true" aria-labelledby="ct-t">
   <div class="grab"></div>
@@ -1039,6 +1049,21 @@ filtUI();render()});
 document.addEventListener('keydown',function(e){if(e.key==='/'&&!/^(INPUT|TEXTAREA|SELECT)$/.test((document.activeElement||{}).tagName||'')){e.preventDefault();$('q').focus()}});
 $('fcontact').addEventListener('click',function(e){e.preventDefault();openSheet('sh-contact')});
 setPlaceUI();filtUI();renderCatBar();render();
+/* ===== فقط کاربر ثبت‌نام‌شده: ثبت وسیله، پیام‌ها، پروفایل و لایک ===== */
+function isAuth(){try{return localStorage.getItem('yara_auth')==='1'}catch(e){return false}}
+if(isAuth()){
+ /* کاربر لاگین‌کرده: «خانه» و دکمه‌ی بازگشت به صفحه‌ی خانه‌ی کاربر می‌روند، نه صفحه‌ی اول */
+ document.querySelectorAll('a[href="index.html"]').forEach(function(a){a.setAttribute('href','17-home-user.html')});
+ document.querySelectorAll('[data-go="index.html"]').forEach(function(a){a.setAttribute('data-go','17-home-user.html')});
+}
+window.addEventListener('click',function(e){
+ if(isAuth())return;
+ var a=e.target.closest('.heart,a[href="05-listing.html"],[data-go="05-listing.html"],a[href="06-requests.html"],a[href="07-chat.html"],[data-go="07-chat.html"],a[href="10-profile.html"],[data-go="10-profile.html"]');
+ if(!a)return;
+ e.preventDefault();e.stopPropagation();
+ openSheet('sh-reg');
+ var b=document.querySelector('#sh-reg .rg-go');if(b)setTimeout(function(){b.focus({preventScroll:true})},60)},true);
+
 if(st.loc==='نزدیک من'){getNearMe(function(err,pos){
 if(err){st.loc='';setPlaceUI();var g=$('gps');g.textContent=nmMsg(err.code);g.style.display='block';render();return}
 applyPos(pos);render()})}

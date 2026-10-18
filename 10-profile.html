@@ -286,11 +286,11 @@ body.has-nav .scr{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
   <div class="li"><i class="ti ti-credit-card" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-credit-card"/></svg></i><span style="flex:1">روش‌های پرداخت</span><i class="ti ti-chevron-left" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-left"/></svg></i></div>
   <div class="li"><i class="ti ti-heart" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-heart"/></svg></i><span style="flex:1">ذخیره‌شده‌ها</span><i class="ti ti-chevron-left" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-left"/></svg></i></div>
   <div class="li" data-go="11-report.html" style="cursor:pointer"><i class="ti ti-help-circle" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-help-circle"/></svg></i><span style="flex:1">کمک و پشتیبانی</span><i class="ti ti-chevron-left" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-left"/></svg></i></div>
-  <div class="li" style="color:var(--text-danger)" data-go="12-signup.html"><i class="ti ti-logout" style="color:var(--text-danger)" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-logout"/></svg></i><span style="flex:1">خروج از حساب</span></div>
+  <div class="li" id="logout" role="button" tabindex="0" style="color:var(--text-danger);cursor:pointer"><i class="ti ti-logout" style="color:var(--text-danger)" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-logout"/></svg></i><span style="flex:1">خروج از حساب</span></div>
 </div>
 
 <div class="nav">
-  <div class="ni" data-go="index.html"><i class="ti ti-home" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-home"/></svg></i>خانه</div>
+  <div class="ni" data-go="17-home-user.html"><i class="ti ti-home" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-home"/></svg></i>خانه</div>
   <div class="ni" data-go="02-search.html"><i class="ti ti-search" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"/></svg></i>جستجو</div>
   <div class="ni" data-go="05-listing.html"><i class="ti ti-circle-plus" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-plus"/></svg></i>ثبت وسیله</div>
   <div class="ni" data-go="07-chat.html"><i class="ti ti-message" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-message"/></svg></i>پیام‌ها</div>
@@ -368,6 +368,11 @@ document.querySelectorAll('#vo .sw').forEach(function(s){s.addEventListener('cli
 var c=s.closest('.pc'),on=c.getAttribute('data-a')!=='1';c.setAttribute('data-a',on?'1':'0');
 s.classList.toggle('on',on);s.setAttribute('aria-checked',on);
 var st=c.querySelector('.st');st.textContent=on?'فعال':'متوقف شده';st.style.color=on?'var(--text-success)':'var(--text-secondary)';cnt()})});
+/* خروج از حساب: پرچم ورود پاک می‌شود و کاربر به صفحه‌ی اول برمی‌گردد */
+(function(){var b=document.getElementById('logout');if(!b)return;
+function out(){try{localStorage.removeItem('yara_auth')}catch(e){}location.replace('index.html')}
+b.addEventListener('click',out);
+b.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();out()}})})();
 </script>
 </body>
 </html>

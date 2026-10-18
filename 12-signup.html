@@ -376,7 +376,7 @@ show(4)});
 ['u1','u2'].forEach(function(id){$(id).addEventListener('click',function(){
 done[id]=true;var b=$(id);b.classList.add('done');b.querySelector('small').textContent='اضافه شد';setIc(b.querySelector('i.ti'),'check');$('e4').style.display='none'})});
 function finish(v){
-try{localStorage.setItem('yara_first',$('fn').value.trim());localStorage.setItem('yara_last',$('ln').value.trim());localStorage.setItem('yara_idv',v?'sent':'none')}catch(e){}
+try{localStorage.setItem('yara_first',$('fn').value.trim());localStorage.setItem('yara_last',$('ln').value.trim());localStorage.setItem('yara_idv',v?'sent':'none');localStorage.setItem('yara_auth','1')}catch(e){}
 $('wl').textContent='خوش آمدی، '+($('fn').value.trim()||'دوست');
 $('wm').textContent=v?'مدارکت برای بررسی ارسال شد. تا آن موقع می‌توانی وسیله پیدا کنی.':'می‌توانی هر وقت خواستی از پروفایل هویتت را تأیید کنی.';show(5)}
 $('b4').addEventListener('click',function(){if(!done.u1||!done.u2){$('e4').style.display='block';return}finish(true)});
