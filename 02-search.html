@@ -955,7 +955,12 @@ list.forEach(function(it){
  +'<div class="bd"><div class="trw"><p class="t">'+it.t+'</p><button class="heart" aria-label="ذخیره">'+icon('heart')+'</button></div><p class="m">'+rating+'<span>·</span>'+(dist?'<span>'+dist+'</span><span>·</span>':'')+'<span>'+it.nb+'</span></p>'
  +'<p class="m" style="margin-top:4px"><span class="tag">'+it.tag+'</span>'+(it.dep?'<span class="tag w">'+it.dep+'</span>':'')+'</p>'
  +priceHtml(it)+'</div>';
- r.querySelector('.heart').addEventListener('click',function(e){e.stopPropagation();this.classList.toggle('on')});
+ var hb=r.querySelector('.heart');
+ if(isAuth()&&YF.has(it.t))hb.classList.add('on');
+ hb.addEventListener('click',function(e){e.stopPropagation();if(!isAuth())return;
+  var on=YF.toggle({t:it.t,id:it.id,ic:it.ic,tint:tint,p:YF.fmt(it.pn),u:it.u,v:it.v,n:it.n,nb:it.nb});
+  if(on&&it.img)YF.thumb(it.img,it.t);
+  this.classList.toggle('on',on)});
  var pb=r.querySelector('.pbtn');
  if(pb)pb.addEventListener('click',function(e){e.stopPropagation();var o=!OPENP[it.id];OPENP[it.id]=o;this.setAttribute('aria-expanded',o);r.querySelector('.pps').style.display=o?'block':'none'});
  box.appendChild(r)});
@@ -1025,6 +1030,18 @@ $('cs').addEventListener('input',function(){renderCats(this.value)});
 $('call').addEventListener('click',function(){chooseCat('all','');closeSheets()});
 (function(){var p=new URLSearchParams(location.search),c=p.get('c'),g=p.get('g'),has=Object.prototype.hasOwnProperty;
 if(c&&has.call(catBy,c))cat=normCat('cat',c);else if(g&&has.call(grpBy,g))cat={type:'group',key:g}})();
+
+/* ===== علاقه‌مندی‌ها: ذخیره‌ی مشترک بین همه‌ی صفحه‌ها (localStorage: yara_favs) ===== */
+var YF=(function(){
+var K='yara_favs';
+function all(){try{var a=JSON.parse(localStorage.getItem(K));return Array.isArray(a)?a.filter(function(x){return x&&typeof x==='object'&&typeof x.t==='string'}):[]}catch(e){return[]}}
+function save(a){try{localStorage.setItem(K,JSON.stringify(a));return true}catch(e){return false}}
+function has(t){return all().some(function(x){return x.t===t})}
+function toggle(s){var a=all(),n=a.filter(function(x){return x.t!==s.t});if(n.length!==a.length){save(n);return false}n.unshift(s);save(n);return true}
+function remove(t){save(all().filter(function(x){return x.t!==t}))}
+function fmt(n){try{return new Intl.NumberFormat('fa-IR').format(Math.round(n))}catch(e){return String(n)}}
+function thumb(src,t){var im=new Image();im.onload=function(){try{var S=160,c=document.createElement('canvas');c.width=c.height=S;var g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,S,S);var r=Math.min(S/im.width,S/im.height),w=im.width*r,h=im.height*r;g.drawImage(im,(S-w)/2,(S-h)/2,w,h);var d=c.toDataURL('image/jpeg',.7),a=all();a.forEach(function(x){if(x.t===t)x.th=d});save(a)}catch(e){}};im.src=src}
+return{all:all,has:has,toggle:toggle,remove:remove,fmt:fmt,thumb:thumb}})();
 
 /* ---------- sheets ---------- */
 function openSheet(id){$('ov').classList.add('open');$(id).classList.add('open');document.body.style.overflow='hidden'}

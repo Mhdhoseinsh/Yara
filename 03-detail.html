@@ -266,6 +266,8 @@ body.has-nav .scr{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
 .sp{background:var(--surface-1);border-radius:var(--radius);padding:10px 12px;min-width:0}
 .sp .k{font-size:12px;color:var(--text-secondary)}
 .sp .v{font-size:14px;font-weight:500;overflow-wrap:anywhere}
+.ytoast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);z-index:60;max-width:calc(100% - 28px);display:flex;align-items:center;gap:12px;background:var(--text-primary);color:var(--surface-2);border-radius:999px;padding:10px 16px;font-size:13px;box-shadow:0 4px 16px rgba(0,0,0,.25)}
+.ytoast a{color:inherit;font-weight:500;text-decoration:underline;cursor:pointer;white-space:nowrap}
 </style>
 <div class="hero" id="hero">
   <button class="rb" style="right:10px" aria-label="بازگشت" data-go="02-search.html"><i class="ti ti-arrow-right" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></i></button>
@@ -340,6 +342,16 @@ body.has-nav .scr{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
   <div style="flex:1"><p style="font-size:15px;font-weight:500" id="bt"></p><p class="sub" id="bs"></p></div>
   <button class="pbx" id="req" data-go="04-checkout.html">درخواست اجاره</button>
 </div>
+</div>
+<div class="ov" id="ov"></div>
+<div class="sheet" id="sh-reg" role="dialog" aria-modal="true" aria-labelledby="rg-t">
+  <div class="grab"></div>
+  <div class="sh"><h2 id="rg-t">برای ادامه وارد شو</h2><button class="ib" data-close aria-label="بستن"><i class="ti ti-x" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></i></button></div>
+  <p class="hint" style="padding:0 14px;margin:0 0 14px">برای ذخیره‌ی این وسیله در علاقه‌مندی‌هایت، وارد حساب خودت شو یا ثبت‌نام کن.</p>
+  <div style="padding:0 14px 6px">
+    <button class="pb rg-go" data-go="12-signup.html" type="button">ورود یا ثبت‌نام</button>
+    <button type="button" data-close style="width:100%;min-height:44px;margin-top:6px;border:none;background:transparent;color:var(--text-secondary);font-size:13px">فعلاً نه</button>
+  </div>
 </div>
 <script>
 var nf=new Intl.NumberFormat('fa-IR');
@@ -562,7 +574,40 @@ q++;e.style.display='none';draw()});
 $('mn').addEventListener('click',function(){var e=$('err');
 if(q<=1){e.textContent='حداقل مدت اجاره یک '+cur.u+' است.';e.style.display='block';return}
 q--;e.style.display='none';draw()});
-$('hh').addEventListener('click',function(){this.classList.toggle('on')});
+/* ===== علاقه‌مندی‌ها: ذخیره‌ی مشترک بین همه‌ی صفحه‌ها (localStorage: yara_favs) ===== */
+var YF=(function(){
+var K='yara_favs';
+function all(){try{var a=JSON.parse(localStorage.getItem(K));return Array.isArray(a)?a.filter(function(x){return x&&typeof x==='object'&&typeof x.t==='string'}):[]}catch(e){return[]}}
+function save(a){try{localStorage.setItem(K,JSON.stringify(a));return true}catch(e){return false}}
+function has(t){return all().some(function(x){return x.t===t})}
+function toggle(s){var a=all(),n=a.filter(function(x){return x.t!==s.t});if(n.length!==a.length){save(n);return false}n.unshift(s);save(n);return true}
+function remove(t){save(all().filter(function(x){return x.t!==t}))}
+function fmt(n){try{return new Intl.NumberFormat('fa-IR').format(Math.round(n))}catch(e){return String(n)}}
+function thumb(src,t){var im=new Image();im.onload=function(){try{var S=160,c=document.createElement('canvas');c.width=c.height=S;var g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,S,S);var r=Math.min(S/im.width,S/im.height),w=im.width*r,h=im.height*r;g.drawImage(im,(S-w)/2,(S-h)/2,w,h);var d=c.toDataURL('image/jpeg',.7),a=all();a.forEach(function(x){if(x.t===t)x.th=d});save(a)}catch(e){}};im.src=src}
+return{all:all,has:has,toggle:toggle,remove:remove,fmt:fmt,thumb:thumb}})();
+function isAuth(){try{return localStorage.getItem('yara_auth')==='1'}catch(e){return false}}
+
+/* ===== دیالوگ ثبت‌نام و قلب علاقه‌مندی ===== */
+function openSheet(id){$('ov').classList.add('open');$(id).classList.add('open');document.body.style.overflow='hidden'}
+function closeSheets(){$('ov').classList.remove('open');document.querySelectorAll('.sheet').forEach(function(x){x.classList.remove('open')});document.body.style.overflow=''}
+$('ov').addEventListener('click',closeSheets);
+document.querySelectorAll('[data-close]').forEach(function(b){b.addEventListener('click',closeSheets)});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeSheets()});
+var toastT=null;
+function toast(msg,link){var o=document.querySelector('.ytoast');if(o)o.remove();clearTimeout(toastT);
+ var t=document.createElement('div');t.className='ytoast';t.setAttribute('role','status');
+ var s=document.createElement('span');s.textContent=msg;t.appendChild(s);
+ if(link){var a=document.createElement('a');a.textContent='مشاهده';a.setAttribute('data-go','18-favorites.html');t.appendChild(a)}
+ document.body.appendChild(t);toastT=setTimeout(function(){t.remove()},3200)}
+function favSnap(){return{t:it.t,id:it.id,ic:it.ic,tint:TINT,p:YF.fmt(it.pn),u:it.u,v:it.v,n:it.n,nb:it.nb}}
+function syncHeart(){var on=isAuth()&&YF.has(it.t),h=$('hh');h.classList.toggle('on',on);h.setAttribute('aria-pressed',on?'true':'false');h.setAttribute('aria-label',on?'حذف از علاقه‌مندی‌ها':'ذخیره در علاقه‌مندی‌ها')}
+$('hh').addEventListener('click',function(){
+ if(!isAuth()){openSheet('sh-reg');var b=document.querySelector('#sh-reg .rg-go');if(b)setTimeout(function(){b.focus({preventScroll:true})},60);return}
+ var on=YF.toggle(favSnap());
+ if(on&&it.img)YF.thumb(it.img,it.t);
+ syncHeart();toast(on?'به علاقه‌مندی‌ها اضافه شد':'از علاقه‌مندی‌ها حذف شد',on)});
+syncHeart();
+window.addEventListener('pageshow',function(e){if(e.persisted)syncHeart()});
 draw();
 </script>
 </body>
