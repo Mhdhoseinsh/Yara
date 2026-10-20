@@ -280,7 +280,7 @@ body.has-nav .scr{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
   </div>
   <div class="acts" style="margin-top:14px">
     <button data-go="07-chat.html">پیام به پشتیبانی</button>
-    <button data-go="10-profile.html">بازگشت</button>
+    <button data-back data-go="10-profile.html">بازگشت</button>
   </div>
 </div>
 </div>
@@ -365,5 +365,6 @@ if(need&&ph.get()<1){$('e3').style.display='block';bad=true}
 if(bad)return;
 $('form').style.display='none';$('ok').style.display='block';window.scrollTo(0,0)});
 </script>
+<script src="back.js"></script>
 </body>
 </html>

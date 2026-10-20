@@ -381,8 +381,9 @@ $('wl').textContent='خوش آمدی، '+($('fn').value.trim()||'دوست');
 $('wm').textContent=v?'مدارکت برای بررسی ارسال شد. تا آن موقع می‌توانی وسیله پیدا کنی.':'می‌توانی هر وقت خواستی از پروفایل هویتت را تأیید کنی.';show(5)}
 $('b4').addEventListener('click',function(){if(!done.u1||!done.u2){$('e4').style.display='block';return}finish(true)});
 $('sk').addEventListener('click',function(){finish(false)});
-$('bk').addEventListener('click',function(){if(cur>1){if(cur===2)clearInterval(timer);show(cur-1)}else{location.href='index.html'}});
+$('bk').addEventListener('click',function(){if(cur>1){if(cur===2)clearInterval(timer);show(cur-1)}else{window.yaraBack('index.html')}});
 show(1);
 </script>
+<script src="back.js"></script>
 </body>
 </html>

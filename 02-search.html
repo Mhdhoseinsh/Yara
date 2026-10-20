@@ -1085,5 +1085,6 @@ if(st.loc==='نزدیک من'){getNearMe(function(err,pos){
 if(err){st.loc='';setPlaceUI();var g=$('gps');g.textContent=nmMsg(err.code);g.style.display='block';render();return}
 applyPos(pos);render()})}
 </script>
+<script src="back.js"></script>
 </body>
 </html>
