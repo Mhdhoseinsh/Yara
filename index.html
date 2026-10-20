@@ -6,7 +6,7 @@
 <script>
 /* کاربر ثبت‌نام‌کرده (لاگین) هیچ‌وقت صفحه‌ی اول را نمی‌بیند؛ مستقیم می‌رود به صفحه‌ی خانه‌ی کاربر */
 (function(){
- function authed(){try{return localStorage.getItem('yara_auth')==='1'}catch(e){return false}}
+ function authed(){try{return localStorage.getItem('yara_auth')==='1'||!!localStorage.getItem('yara_first')}catch(e){return false}}
  function go(){document.documentElement.style.visibility='hidden';location.replace('17-home-user.html')}
  if(authed())go();
  /* اگر با دکمه‌ی «بازگشت» به این صفحه برگشت (از حافظه‌ی مرورگر) هم بررسی شود */

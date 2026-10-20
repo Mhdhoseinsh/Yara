@@ -3,6 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>
+/* فقط کاربر ثبت‌نام‌کرده اجازه‌ی دیدن این صفحه را دارد؛ در غیر این صورت به صفحه‌ی اول (index) می‌رود */
+(function(){
+ function authed(){try{return localStorage.getItem('yara_auth')==='1'||!!localStorage.getItem('yara_first')}catch(e){return false}}
+ function out(){document.documentElement.style.visibility='hidden';location.replace('index.html')}
+ if(!authed())out();
+ window.addEventListener('pageshow',function(e){if(e.persisted&&!authed())out()});
+})();
+</script>
 <title>صفحه اصلی کاربر | یارا</title>
 <meta name="description" content="یارا، اجاره وسایل شخصی بین همسایه‌ها. ساعتی، روزانه یا هفتگی، با پرداخت امن و ودیعه برگشتی.">
 <meta name="theme-color" content="#2358cc">
@@ -248,7 +257,7 @@ body.has-nav .scr{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
 <div class="uhd">
   <div class="uav" id="uav" data-go="10-profile.html" role="link" aria-label="پروفایل"><span id="ini">مر</span><span class="vk" id="vk"><i class="ti ti-circle-check" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle-check"/></svg></i></span></div>
   <div style="flex:1;min-width:0">
-    <p style="font-size:17px;font-weight:500" id="hi">سلام، مهدی</p>
+    <p style="font-size:17px;font-weight:500" id="hi">سلام</p>
     <p class="sub loc" style="display:flex;align-items:center;gap:4px"><i class="ti ti-map-pin" style="font-size:14px" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-map-pin"/></svg></i>تهران، ونک</p>
   </div>
   <button class="bell" aria-label="اعلان‌ها"><i class="ti ti-bell" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-bell"/></svg></i><b></b></button>
@@ -363,9 +372,9 @@ window.addEventListener('scroll',f,{passive:true});f()})();
 </script>
 <script>
 /* user info saved by the signup page (falls back to a sample user) */
-var first='مهدی',last='رضایی',idv=null;
+var first='',last='',idv=null;
 try{first=localStorage.getItem('yara_first')||first;last=localStorage.getItem('yara_last')||last;idv=localStorage.getItem('yara_idv')}catch(e){}
-$('hi').textContent='سلام، '+first;
+$('hi').textContent=first?('سلام، '+first):'سلام';
 $('ini').textContent=first.charAt(0)+(last?last.charAt(0):'');
 if(idv==='ok')$('vk').style.display='flex';
 if(idv==='sent'){$('bt').textContent='مدارکت برای بررسی ارسال شد. نتیجه تا ۲۴ ساعت اعلام می‌شود.';$('bgo').style.display='none'}
