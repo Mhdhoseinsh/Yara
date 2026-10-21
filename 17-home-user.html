@@ -380,15 +380,12 @@ if(idv==='ok')$('vk').style.display='flex';
 if(idv==='sent'){$('bt').textContent='مدارکت برای بررسی ارسال شد. نتیجه تا ۲۴ ساعت اعلام می‌شود.';$('bgo').style.display='none'}
 $('bx').addEventListener('click',function(){$('bn').style.display='none'});
 
-var D=[
-{t:'دوچرخه کوهستان',o:'علی م.',c:'sport',v:4.6,n:14,km:0.8,pd:480000,p:'۶۰٬۰۰۰',u:'ساعت',ic:'bike',bg:'green',tag:'تحویل حضوری',nw:false},
-{t:'اسکوتر برقی',o:'نگار ک.',c:'sport',v:4.4,n:9,km:1,pd:320000,p:'۴۰٬۰۰۰',u:'ساعت',ic:'scooter',bg:'yellow',tag:'تحویل حضوری',nw:true},
-{t:'دریل شارژی بوش',o:'امیر ح.',c:'tool',v:4.8,n:21,km:1.2,pd:80000,p:'۸۰٬۰۰۰',u:'روز',ic:'tool',bg:'orange',tag:'تحویل حضوری',nw:false},
-{t:'ویدیو پروژکتور',o:'رضا س.',c:'party',v:4.5,n:6,km:1.8,pd:300000,p:'۳۰۰٬۰۰۰',u:'روز',ic:'presentation',bg:'magenta',tag:'ارسال با پیک',nw:false},
-{t:'دوربین سونی A7 III',o:'سارا ا.',c:'cam',v:4.9,n:28,km:2,pd:450000,p:'۴۵۰٬۰۰۰',u:'روز',ic:'camera',bg:'violet',tag:'تحویل حضوری',nw:false},
-{t:'چادر چهار نفره',o:'مینا ر.',c:'trip',v:4.7,n:11,km:3,pd:200000,p:'۲۰۰٬۰۰۰',u:'شب',ic:'tent',bg:'aqua',tag:'ارسال با پیک',nw:false},
-{t:'میکروفون یقه‌ای بی‌سیم',o:'پویا ن.',c:'cam',v:0,n:0,km:3.4,pd:60000,p:'۶۰٬۰۰۰',u:'روز',ic:'microphone',bg:'blue',tag:'تحویل حضوری',nw:true},
-{t:'سایه‌بان مهمانی',o:'لیلا ف.',c:'party',v:4.3,n:5,km:4.1,pd:150000,p:'۱۵۰٬۰۰۰',u:'روز',ic:'confetti',bg:'magenta',tag:'ارسال با پیک',nw:false}];
+/* لیست از دیتابیس (MySQL) می‌آید */
+</script>
+<script src="api/home.php"></script>
+<script src="api/banner.js"></script>
+<script>yaraGuard('D')</script>
+<script>
 /* ===== علاقه‌مندی‌ها: ذخیره‌ی مشترک بین همه‌ی صفحه‌ها (localStorage: yara_favs) ===== */
 var YF=(function(){
 var K='yara_favs';
